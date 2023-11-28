@@ -1,0 +1,17 @@
+.filters {
+  width: 300px;
+  box-shadow: 0px 1px 3px black;
+  padding: 15px;
+  font-weight: bold;
+  &__title-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  &__select {
+    margin-bottom: 15px;
+  }
+  &__years {
+    margin-bottom: 15px;
+  }
+}
