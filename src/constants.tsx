@@ -1,3 +1,4 @@
+//полное API можно найти тут : https://developer.themoviedb.org/reference/search-movie
 export const selectValues = {};
 
 export interface IFilm {
@@ -94,3 +95,15 @@ export const cookiesNames = {
   email: "email",
   accountId: "accountId",
 };
+
+export interface IFetchedFilmsDataWithPaginationData {
+  //Когда мы запрашиваем фильмы вместе со
+  //списком фильмов мы должны получить и колличество страниц в списке
+  films: IFilm[];
+  paginationTotalPages: number;
+}
+
+export interface IFetchFilmsResponse {
+  results: IFilm[];
+  total_pages: number;
+}

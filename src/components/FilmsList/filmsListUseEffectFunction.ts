@@ -1,16 +1,12 @@
 import { SetStateAction } from "react";
-import {
-  fetchPopularFilmsWithPaginationData,
-  fetchTopRatedFilmsWithPaginationData,
-} from "../../API/fetchFilms";
 import fetchUserId from "../../API/fetchUserId";
 import { ICookieSetOptions, IFilm, cookiesNames } from "../../constants";
 import {
   IAction,
   IFilters,
   filtersReducerTypes,
-  sortingTypes,
 } from "../../context/filtersContext";
+import fetchFilmsWithPaginationData from "../../API/fetchFilmsWithPaginationData";
 
 export default function filmsListUseEffectFunction({
   setIsFetchFilmsFailed,
@@ -36,57 +32,39 @@ export default function filmsListUseEffectFunction({
   fetchUserId().then(
     (accountId: number) => {
       setCookie(cookiesNames.accountId, accountId, { maxAge: 3600 * 24 });
-      switch (filters.checkedSortingType) {
-        case sortingTypes.byPopularity: {
-          fetchPopularFilmsWithPaginationData(
-            accountId,
-            filters.paginationPage
-          ).then(
-            ({
-              films,
-              paginationTotalPages,
-            }: {
-              films: never[];
-              paginationTotalPages: number;
-            }) => {
-              setFilms(films);
-              setIsLoading(false);
-              filtersDispatch({
-                type: filtersReducerTypes.setTotalPages,
-                paginationTotalPages: paginationTotalPages,
-              });
-            },
-            (err) => {
-              console.error(err);
-              setIsFetchFilmsFailed(true);
-            }
-          );
-          break;
-        }
-        case sortingTypes.byRating: {
-          fetchTopRatedFilmsWithPaginationData(
-            accountId,
-            filters.paginationPage
-          ).then(
-            ({ films, paginationTotalPages }) => {
-              setFilms(films);
-              setIsLoading(false);
-              filtersDispatch({
-                type: filtersReducerTypes.setTotalPages,
-                paginationTotalPages: paginationTotalPages,
-              });
-            },
-            (err) => {
-              console.error(err);
-              setIsFetchFilmsFailed(true);
-            }
-          );
-          break;
-        }
-      }
+      fetchFilmsWithPaginationData({
+        accountId,
+        searchQuery: filters.searchQuery,
+        page: filters.paginationPage,
+        checkedSortingType: filters.checkedSortingType,
+      })
+        .then(
+          ({
+            films,
+            paginationTotalPages,
+          }: {
+            films: IFilm[];
+            paginationTotalPages: number;
+          }) => {
+            setFilms(films);
+            filtersDispatch({
+              type: filtersReducerTypes.setTotalPages,
+              paginationTotalPages: paginationTotalPages,
+            });
+          },
+          (err) => {
+            console.error(err);
+            setIsFetchFilmsFailed(true);
+          }
+        )
+        .finally(() => {
+          setIsLoading(false);
+        });
     },
     (err) => {
       setIsFetchAccountIdFailed(true);
+      setIsFetchFilmsFailed(true);
+      setIsLoading(false);
       console.error(err);
     }
   );

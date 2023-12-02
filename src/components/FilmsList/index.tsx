@@ -49,7 +49,7 @@ export default function FilmsList() {
       filtersDispatch,
       setCookie,
     });
-  }, [filters.checkedSortingType, filters.paginationPage]);
+  }, [filters.checkedSortingType, filters.paginationPage, filters.searchQuery]);
   const filteredFilmsList = films.filter((film: IFilm) => {
     let isGenresSuitable = !filters.checkedGenres.length;
     let isYearsSuitable = false;

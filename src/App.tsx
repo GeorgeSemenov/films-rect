@@ -24,7 +24,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/1/film/:filmID",
+        path: "/film/:filmID",
         element: <FilmPage />,
       },
     ],
