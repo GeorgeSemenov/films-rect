@@ -28,12 +28,15 @@ export default function Filters({
     (() => {
       console.error("error in component Filters, its out of filterscontext");
     });
+  function resetFilters() {
+    filtersDispatch({ type: filtersReducerTypes.resetFilters });
+  }
   return (
     <aside className={wrapperClassName}>
       <form className={"filters " + className}>
         <div className="filters__title-container">
           <p>Фильтры</p>
-          <IconButton>
+          <IconButton onClick={resetFilters}>
             <CloseIcon />
           </IconButton>
         </div>

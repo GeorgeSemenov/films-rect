@@ -14,10 +14,9 @@ export default function FiltersProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [filters, filtersDispatch] = useImmerReducer(
-    filtersReducer,
-    filtersInitialValues
-  );
+  const [filters, filtersDispatch] = useImmerReducer(filtersReducer, {
+    ...filtersInitialValues,
+  });
   return (
     <FiltersContext.Provider value={filters}>
       <FiltersDispatchContext.Provider value={filtersDispatch}>
@@ -94,6 +93,10 @@ function filtersReducer(
       draft.searchQuery = searchQuery;
       break;
     }
+    case filtersReducerTypes.resetFilters: {
+      Object.assign(draft, filtersInitialValues);
+      break;
+    }
     default: {
       console.error("unexpected type in filtersReducer");
     }
@@ -108,6 +111,7 @@ export const filtersReducerTypes = {
   changePaginationPage: "changePaginationPage",
   setTotalPages: "setTotalPages",
   setSearchQuery: "setSearchQuery",
+  resetFilters: "resetFilters",
 };
 
 export interface IGenre {
