@@ -1,9 +1,9 @@
-import { IFavoriteFilm, urlBase } from "../constants";
+import { IFavoriteFilm, IFetchFilmsResponse, urlBase } from "../constants";
 import fetchData from "./fetchData";
 
 export async function fetchFavoriteFilmsResponse(accountId: number, page = 1) {
   try {
-    const favoriteFilmsResponse = await fetchData({
+    const favoriteFilmsResponse: IFetchFilmsResponse = await fetchData({
       url: `${urlBase}/3/account/${accountId}/favorite/movies?page=${page}`,
     });
     return favoriteFilmsResponse;

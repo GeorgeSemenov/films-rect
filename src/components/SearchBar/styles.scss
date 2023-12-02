@@ -1,0 +1,13 @@
+.search-bar {
+  position: relative;
+  width: 100%;
+
+  &__input {
+    width: 100%;
+  }
+  &__button {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}

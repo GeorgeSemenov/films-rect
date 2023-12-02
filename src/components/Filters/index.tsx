@@ -13,9 +13,10 @@ import Filters__genres from "../Filters__genres";
 import Filters__years from "../Filters__years";
 import { SelectChangeEvent } from "@mui/material/Select";
 import Filters__pagination from "../Filters__pagination";
+import SearchBar from "../SearchBar";
 
 export default function Filters({
-  className,
+  className = "",
   wrapperClassName,
 }: {
   className?: string;
@@ -27,23 +28,43 @@ export default function Filters({
     (() => {
       console.error("error in component Filters, its out of filterscontext");
     });
+  function resetFilters() {
+    filtersDispatch({ type: filtersReducerTypes.resetFilters });
+  }
   return (
     <aside className={wrapperClassName}>
-      <form className={"filters " + (className ? className : "")}>
+      <form className={"filters " + className}>
         <div className="filters__title-container">
           <p>Фильтры</p>
-          <IconButton>
+          <IconButton onClick={resetFilters}>
             <CloseIcon />
           </IconButton>
         </div>
+        <SearchBar
+          className="filters__search-bar"
+          onSearch={(searchQuery) => {
+            filtersDispatch({
+              type: filtersReducerTypes.changePaginationPage,
+              paginationPage: 1,
+            });
+            filtersDispatch({
+              type: filtersReducerTypes.setSearchQuery,
+              searchQuery: searchQuery,
+            });
+          }}
+        />
         <SelectComponent
           label="Сортировать по"
-          selectOptions={filtersInitialValues.sortingTypes}
+          selectOptions={filtersInitialValues.filtersSortingTypes}
           className="filters__select"
           handleChange={(e: SelectChangeEvent) => {
             filtersDispatch({
               type: filtersReducerTypes.changeSorting,
               checkedSortingType: e.target.value,
+            });
+            filtersDispatch({
+              type: filtersReducerTypes.changePaginationPage,
+              paginationPage: 1,
             });
           }}
           value={filters.checkedSortingType}

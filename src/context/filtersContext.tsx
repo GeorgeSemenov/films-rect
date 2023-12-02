@@ -14,10 +14,9 @@ export default function FiltersProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [filters, filtersDispatch] = useImmerReducer(
-    filtersReducer,
-    filtersInitialValues
-  );
+  const [filters, filtersDispatch] = useImmerReducer(filtersReducer, {
+    ...filtersInitialValues,
+  });
   return (
     <FiltersContext.Provider value={filters}>
       <FiltersDispatchContext.Provider value={filtersDispatch}>
@@ -45,6 +44,7 @@ function filtersReducer(
     genres,
     paginationPage,
     paginationTotalPages,
+    searchQuery,
   }: IAction
 ) {
   switch (type) {
@@ -89,6 +89,14 @@ function filtersReducer(
       draft.paginationTotalPages = paginationTotalPages;
       break;
     }
+    case filtersReducerTypes.setSearchQuery: {
+      draft.searchQuery = searchQuery;
+      break;
+    }
+    case filtersReducerTypes.resetFilters: {
+      Object.assign(draft, filtersInitialValues);
+      break;
+    }
     default: {
       console.error("unexpected type in filtersReducer");
     }
@@ -102,6 +110,8 @@ export const filtersReducerTypes = {
   changeYears: "changeYears",
   changePaginationPage: "changePaginationPage",
   setTotalPages: "setTotalPages",
+  setSearchQuery: "setSearchQuery",
+  resetFilters: "resetFilters",
 };
 
 export interface IGenre {
@@ -112,15 +122,16 @@ export interface IGenre {
 export interface IFilters {
   years: [number, number];
   minMaxYears: [number, number];
-  sortingTypes: ISortingTypes[];
+  filtersSortingTypes: IfiltersSortingTypes[];
   checkedSortingType: string;
   genres: IGenre[];
   checkedGenres: IGenre[];
   paginationTotalPages: number;
   paginationPage: number;
+  searchQuery?: string;
 }
 
-export interface ISortingTypes {
+export interface IfiltersSortingTypes {
   value: string;
   label: string;
   selected: boolean;
@@ -135,23 +146,28 @@ export interface IAction {
   genres?: IGenre[];
   paginationPage?: number;
   paginationTotalPages?: number;
+  searchQuery?: string;
 }
 
-export const sortingTypes = {
+export const filtersSortingTypes = {
   byPopularity: "byPopularity",
   byRating: "byRating",
 };
 
 export const filtersInitialValues: IFilters = {
-  sortingTypes: [
+  filtersSortingTypes: [
     {
-      value: sortingTypes.byPopularity,
+      value: filtersSortingTypes.byPopularity,
       label: "По популярности",
       selected: true,
     },
-    { value: sortingTypes.byRating, label: "По рэйтингу", selected: false },
+    {
+      value: filtersSortingTypes.byRating,
+      label: "По рэйтингу",
+      selected: false,
+    },
   ],
-  checkedSortingType: sortingTypes.byPopularity,
+  checkedSortingType: filtersSortingTypes.byPopularity,
   genres: [
     {
       id: 28,
@@ -175,4 +191,5 @@ export const filtersInitialValues: IFilters = {
   minMaxYears: [1950, 2023],
   paginationTotalPages: 5,
   paginationPage: 1,
+  searchQuery: "",
 };

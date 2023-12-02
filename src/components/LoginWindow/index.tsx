@@ -14,7 +14,7 @@ export default function LoginWindow() {
   }, []);
   const [isCorrectInput, setIsCorrectInput] = useState(true);
   const [email, setEmail] = useState("");
-  const [cookies, setCookie] = useCookies([cookiesNames.isAuthorized]);
+  const [, setCookie] = useCookies([cookiesNames.isAuthorized]);
   return (
     <form
       className="login-form"

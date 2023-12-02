@@ -5,8 +5,7 @@ import MainPage from "./pages/MainPage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./pages/ErrorPage";
 import FilmPage from "./pages/FilmsPage";
-import Filters from "./components/Filters";
-import FilmsList from "./components/FilmsList";
+import FilmsListAndFilters from "./components/FilmstListAndFilters";
 
 const router = createBrowserRouter([
   {
@@ -16,15 +15,10 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: (
-          <div style={{ display: "flex" }}>
-            <Filters />
-            <FilmsList />
-          </div>
-        ),
+        element: <FilmsListAndFilters />,
       },
       {
-        path: "/1/film/:filmID",
+        path: "/film/:filmID",
         element: <FilmPage />,
       },
     ],
