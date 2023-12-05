@@ -18,8 +18,12 @@ export default async function fetchData({
       headers: headers,
       body: JSON.stringify(body),
     });
-    if (response?.ok) {
+    if (response?.ok && isResponseStatusCorrect(response)) {
       data = await response.json();
+    } else if (!isResponseStatusCorrect(response)) {
+      throw new Error(
+        "Error on the server side, response status isn't correct"
+      );
     } else {
       console.warn(`response in fetchObj is not ok`, response);
     }
@@ -28,6 +32,10 @@ export default async function fetchData({
     throw err;
   }
   return data;
+}
+
+function isResponseStatusCorrect(response: { status: number }) {
+  return response.status === 200 || response.status === 201;
 }
 
 interface parametrsInterface {

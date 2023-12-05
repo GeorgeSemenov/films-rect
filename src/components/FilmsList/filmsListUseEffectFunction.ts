@@ -7,22 +7,25 @@ import {
   filtersReducerTypes,
 } from "../../context/filtersContext";
 import fetchFilmsWithPaginationData from "../../API/fetchFilmsWithPaginationData";
+import { IDisplayedError } from "../../context/ErrorContext";
 
 export default function filmsListUseEffectFunction({
   setIsFetchFilmsFailed,
-  setIsFetchAccountIdFailed,
   filters,
   setFilms,
   setIsLoading,
   filtersDispatch,
   setCookie,
+  displayedErrorDispatch,
 }: {
   setIsFetchFilmsFailed: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsFetchAccountIdFailed: React.Dispatch<React.SetStateAction<boolean>>;
   filters: IFilters;
   setFilms: React.Dispatch<React.SetStateAction<IFilm[]>>;
   setIsLoading: (value: React.SetStateAction<boolean>) => void;
   filtersDispatch: React.Dispatch<IAction>;
+  displayedErrorDispatch: React.Dispatch<
+    React.SetStateAction<IDisplayedError | null>
+  > | null;
   setCookie: (
     name: string,
     value: any,
@@ -54,6 +57,12 @@ export default function filmsListUseEffectFunction({
           },
           (err) => {
             console.error(err);
+            if (displayedErrorDispatch) {
+              displayedErrorDispatch({
+                error: new Error("can't fetch accountId"),
+                displayDuration: "1s",
+              });
+            }
             setIsFetchFilmsFailed(true);
           }
         )
@@ -62,7 +71,13 @@ export default function filmsListUseEffectFunction({
         });
     },
     (err) => {
-      setIsFetchAccountIdFailed(true);
+      if (displayedErrorDispatch) {
+        displayedErrorDispatch({
+          error: new Error(`can't reach server`),
+          displayDelay: "1s",
+          displayDuration: "5s",
+        });
+      }
       setIsFetchFilmsFailed(true);
       setIsLoading(false);
       console.error(err);
@@ -74,6 +89,5 @@ export default function filmsListUseEffectFunction({
     //Когда компонент удаляется
     setIsLoading(true);
     setIsFetchFilmsFailed(false);
-    setIsFetchAccountIdFailed(false);
   };
 }

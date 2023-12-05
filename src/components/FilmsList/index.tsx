@@ -11,11 +11,11 @@ import getFilmYear from "../../utils/getFilmYear";
 import FetchErrorWindow from "../FetchErrorWindow";
 import filmsListUseEffectFunction from "./filmsListUseEffectFunction";
 import { useCookies } from "react-cookie";
-import PopupWindow from "../PopupWindow";
+import { useDisplayedErrorDispatchContext } from "../../context/ErrorContext";
 
 export default function FilmsList() {
+  const displayedErrorDispatch = useDisplayedErrorDispatchContext();
   const [films, setFilms] = useState<IFilm[]>([]);
-  const [isFetchAccountIdFailed, setIsFetchAccountIdFailed] = useState(false);
   const [isFetchFilmsFailed, setIsFetchFilmsFailed] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const filters = useFilters() ?? filtersInitialValues;
@@ -42,12 +42,12 @@ export default function FilmsList() {
   useEffect(() => {
     filmsListUseEffectFunction({
       setIsFetchFilmsFailed,
-      setIsFetchAccountIdFailed,
       filters,
       setFilms,
       setIsLoading,
       filtersDispatch,
       setCookie,
+      displayedErrorDispatch,
     });
   }, [filters.checkedSortingType, filters.paginationPage, filters.searchQuery]);
   const filteredFilmsList = films.filter((film: IFilm) => {
@@ -73,13 +73,6 @@ export default function FilmsList() {
   }
   return (
     <>
-      {isFetchAccountIdFailed && (
-        <PopupWindow
-          message="Не удалось подгрузить accountId"
-          className="popup-window_theme_error"
-          animationDelay="1s"
-        />
-      )}
       {isFetchFilmsFailed ? (
         <FetchErrorWindow />
       ) : (

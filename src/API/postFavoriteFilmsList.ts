@@ -6,15 +6,20 @@ export async function postFavoriteFilm(
   filmId: number,
   isFavorite: boolean
 ) {
-  fetchData({
-    url: `${urlBase}/3/account/${accountId}/favorite`,
-    method: "POST",
-    body: {
-      media_type: "movie",
-      media_id: filmId,
-      favorite: isFavorite,
-    },
-  });
+  try {
+    await fetchData({
+      url: `${urlBase}/3/account/${accountId}/favorite`,
+      method: "POST",
+      body: {
+        media_type: "movie",
+        media_id: filmId,
+        favorite: isFavorite,
+      },
+    });
+  } catch (err) {
+    console.error(`error in postFavoriteFilm`, err);
+    throw err;
+  }
 }
 
 export function addFilmToFavorites(accountId: number, filmId: number) {
