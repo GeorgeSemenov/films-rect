@@ -30,7 +30,7 @@ export default function DialogWindow({
     <Dialog
       onClose={onClose}
       open={isNeedModalWindow}
-      className="popup-window"
+      className="dialog-window"
       onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
           handleSubmit();

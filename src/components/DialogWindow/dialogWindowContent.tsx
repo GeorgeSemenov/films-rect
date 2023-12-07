@@ -26,15 +26,15 @@ export default function DialogWindowContent({
     }
   });
   return (
-    <div className="popup-window__wrapper">
+    <div className="dialog-window__wrapper">
       {inputBlocks.map((block, index) => (
-        <div key={index} className="popup-window__input-block">
-          <label htmlFor={block.inputId} className="popup-window__label">
+        <div key={index} className="dialog-window__input-block">
+          <label htmlFor={block.inputId} className="dialog-window__label">
             {block.label}
           </label>
           <input
             ref={block.isFocused ? focusedInputRef : null}
-            className="popup-window__input"
+            className="dialog-window__input"
             id={block.inputId}
             placeholder={block.inputPlaceholder}
             onChange={block.onChange}
@@ -47,7 +47,7 @@ export default function DialogWindowContent({
         variant="outlined"
         color="primary"
         onClick={handleSubmit}
-        className="popup-window__submit-button"
+        className="dialog-window__submit-button"
       >
         {submitButtonText}
       </Button>
