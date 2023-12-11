@@ -41,7 +41,7 @@ export default function FilmCard({
             component="img"
             height="140"
             image={fullImageRef}
-            alt={title}
+            alt={`Картинка фильма ${title} не подгрузилась, извините. Возможно проблема с VPN.`}
           />
         </CardActionArea>
       </Link>
