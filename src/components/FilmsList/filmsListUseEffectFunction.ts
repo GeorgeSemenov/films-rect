@@ -7,7 +7,6 @@ import {
   filtersReducerTypes,
 } from "../../context/filtersContext";
 import fetchFilmsWithPaginationData from "../../API/fetchFilmsWithPaginationData";
-import { IDisplayedError } from "../../context/ErrorContext";
 
 export default function filmsListUseEffectFunction({
   setIsFetchFilmsFailed,
@@ -16,16 +15,14 @@ export default function filmsListUseEffectFunction({
   setIsLoading,
   filtersDispatch,
   setCookie,
-  displayedErrorDispatch,
+  setError,
 }: {
+  setError: any;
   setIsFetchFilmsFailed: React.Dispatch<React.SetStateAction<boolean>>;
   filters: IFilters;
   setFilms: React.Dispatch<React.SetStateAction<IFilm[]>>;
   setIsLoading: (value: React.SetStateAction<boolean>) => void;
   filtersDispatch: React.Dispatch<IAction>;
-  displayedErrorDispatch: React.Dispatch<
-    React.SetStateAction<IDisplayedError | null>
-  > | null;
   setCookie: (
     name: string,
     value: any,
@@ -57,12 +54,10 @@ export default function filmsListUseEffectFunction({
           },
           (err) => {
             console.error(err);
-            if (displayedErrorDispatch) {
-              displayedErrorDispatch({
-                error: new Error("can't fetch accountId"),
-                displayDuration: "1s",
-              });
-            }
+            setError({
+              error: new Error("can't fetch accountId puk puk hooks"),
+              displayDuration: "1s",
+            });
             setIsFetchFilmsFailed(true);
           }
         )
@@ -71,13 +66,12 @@ export default function filmsListUseEffectFunction({
         });
     },
     (err) => {
-      if (displayedErrorDispatch) {
-        displayedErrorDispatch({
-          error: new Error(`can't reach server`),
-          displayDelay: "1s",
-          displayDuration: "5s",
-        });
-      }
+      setError({
+        error: new Error(`can't reach server`),
+        displayDelay: "1s",
+        displayDuration: "5s",
+      });
+
       setIsFetchFilmsFailed(true);
       setIsLoading(false);
       console.error(err);

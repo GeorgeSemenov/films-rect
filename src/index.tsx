@@ -4,15 +4,19 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { CookiesProvider } from "react-cookie";
+import { Provider } from "react-redux";
+import store from "./app/store";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <CookiesProvider defaultSetOptions={{ path: "/" }}>
-      <App />
-    </CookiesProvider>
+    <Provider store={store}>
+      <CookiesProvider defaultSetOptions={{ path: "/" }}>
+        <App />
+      </CookiesProvider>
+    </Provider>
   </React.StrictMode>
 );
 

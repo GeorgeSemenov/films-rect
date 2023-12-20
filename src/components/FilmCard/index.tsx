@@ -10,7 +10,7 @@ import { StarBorder, Star } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { postFavoriteFilm } from "../../API/postFavoriteFilmsList";
 import { useCookies } from "react-cookie";
-import { useDisplayedErrorDispatchContext } from "../../context/ErrorContext";
+import useActions from "../../hooks/useActions";
 
 export default function FilmCard({
   film,
@@ -19,11 +19,11 @@ export default function FilmCard({
   film: IFilm;
   updateFilms: (func: (films: IFilm[]) => IFilm[]) => void;
 }) {
-  const dispatchError = useDisplayedErrorDispatchContext();
   const [cookie] = useCookies([cookiesNames.accountId]);
   const [isPending, setIsPending] = useState(false);
   const { isFavorite, href, backdrop_path, title, id, vote_average } = film;
   const fullImageRef = imgServerPrefix + backdrop_path;
+  const { setError } = useActions();
   function updateFavorites(isThisFilmFavorite: boolean) {
     updateFilms((films) => {
       const film = films.find((flm: IFilm) => flm["id"] === id);
@@ -67,12 +67,11 @@ export default function FilmCard({
 
               postFavoriteFilm(cookie[cookiesNames.accountId], id, !isFavorite)
                 .catch((err) => {
-                  if (dispatchError) {
-                    dispatchError({
-                      error: err,
-                      displayDuration: "10s",
-                    });
-                  }
+                  setError({
+                    error: err,
+                    displayDuration: "10s",
+                  });
+
                   updateFavorites(isFavoriteBeforeClick);
                 })
                 .finally(() => setIsPending(false));

@@ -11,10 +11,9 @@ import getFilmYear from "../../utils/getFilmYear";
 import FetchErrorWindow from "../FetchErrorWindow";
 import filmsListUseEffectFunction from "./filmsListUseEffectFunction";
 import { useCookies } from "react-cookie";
-import { useDisplayedErrorDispatchContext } from "../../context/ErrorContext";
+import useActions from "../../hooks/useActions";
 
 export default function FilmsList() {
-  const displayedErrorDispatch = useDisplayedErrorDispatchContext();
   const [films, setFilms] = useState<IFilm[]>([]);
   const [isFetchFilmsFailed, setIsFetchFilmsFailed] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -39,6 +38,7 @@ export default function FilmsList() {
       curSortingType: filters.checkedSortingType,
     });
   }
+  const { setError } = useActions();
   useEffect(() => {
     filmsListUseEffectFunction({
       setIsFetchFilmsFailed,
@@ -47,7 +47,7 @@ export default function FilmsList() {
       setIsLoading,
       filtersDispatch,
       setCookie,
-      displayedErrorDispatch,
+      setError,
     });
   }, [filters.checkedSortingType, filters.paginationPage, filters.searchQuery]);
   const filteredFilmsList = films.filter((film: IFilm) => {
