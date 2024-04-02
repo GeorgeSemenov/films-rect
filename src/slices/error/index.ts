@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { IDisplayedError } from "./types";
 
 const initialState: IDisplayedError = {
   error: null,
@@ -6,8 +7,8 @@ const initialState: IDisplayedError = {
 const defaultDisplayDuration = "1s";
 const defaultDisplayDelay = "0s";
 
-const errorSlice = createSlice({
-  name: "error",
+export const errorSlice = createSlice({
+  name: "errorSlice",
   initialState, // инициированно выше
   reducers: {
     setError: (state, { payload }: { payload: IDisplayedError }) => {
@@ -22,11 +23,6 @@ const errorSlice = createSlice({
   },
 });
 4;
-export interface IDisplayedError {
-  error: Error | null;
-  displayDuration?: string;
-  displayDelay?: string;
-}
 
 export default errorSlice.reducer;
 

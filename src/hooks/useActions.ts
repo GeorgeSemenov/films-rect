@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { actions as displayedErrorActions } from "../slices/errorSlice";
+import { actions as displayedErrorActions } from "../slices/error";
 import { useMemo } from "react";
 import { bindActionCreators } from "@reduxjs/toolkit";
 
