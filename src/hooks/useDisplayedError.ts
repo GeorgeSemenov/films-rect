@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
-import { IDisplayedError } from "../slices/error/types";
+import { storeType } from "../app/store";
 
 export default function useDisplayedError() {
-  return useSelector((state: IDisplayedError) => state);
+  return useSelector((state: storeType) => state.errorSlice);
 }
