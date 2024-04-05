@@ -4,7 +4,7 @@ import { URLs } from "../../constants";
 import { IGenre } from "../../context/filtersContext";
 
 export const genresSlice = createApi({
-  reducerPath: "genres",
+  reducerPath: "themovieDBApi",
   baseQuery: fetchBaseQuery({
     baseUrl: URLs.genres.toString(),
     prepareHeaders: (headers) => {

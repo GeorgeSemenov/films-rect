@@ -1,8 +1,8 @@
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
-import { errorSlice } from "../slices/error";
-import { genresSlice } from "../slices/genres";
+import { errorSlice as error } from "../slices/error";
+import { genresSlice } from "../API/genres";
 
-const reducers = combineSlices(errorSlice, genresSlice);
+const reducers = combineSlices(error, genresSlice);
 const middleware = [genresSlice.middleware];
 
 const store = configureStore({
