@@ -14,6 +14,7 @@ import Filters__years from "../Filters__years";
 import { SelectChangeEvent } from "@mui/material/Select";
 import Filters__pagination from "../Filters__pagination";
 import SearchBar from "../SearchBar";
+import useActions from "../../hooks/useActions";
 
 export default function Filters({
   className = "",
@@ -22,6 +23,15 @@ export default function Filters({
   className?: string;
   wrapperClassName?: string;
 }) {
+  const {
+    resetFilters: resetFiltersNew,
+    setCheckedGenres,
+    setGenres,
+    setPaginationPage,
+    setSearchQuery,
+    setSorting,
+    setYears,
+  } = useActions();
   const filters = useFilters() ?? filtersInitialValues;
   const filtersDispatch =
     useFiltersDispatch() ??

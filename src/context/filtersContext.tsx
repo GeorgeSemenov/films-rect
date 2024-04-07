@@ -49,36 +49,42 @@ function filtersReducer(
 ) {
   switch (type) {
     case filtersReducerTypes.changeSorting: {
+      //
       if (checkedSortingType) {
         draft.checkedSortingType = checkedSortingType;
       }
       break;
     }
     case filtersReducerTypes.changeYears: {
+      //
       if (years) {
         draft.years = years;
       }
       break;
     }
     case filtersReducerTypes.setCheckedGenres: {
+      //
       if (checkedGenres) {
         draft.checkedGenres = checkedGenres;
       }
       break;
     }
     case filtersReducerTypes.setGenres: {
+      //
       if (genres) {
         draft.genres = genres;
       }
       break;
     }
     case filtersReducerTypes.changePaginationPage: {
+      //
       if (paginationPage) {
         draft.paginationPage = paginationPage;
       }
       break;
     }
     case filtersReducerTypes.setTotalPages: {
+      //
       paginationTotalPages = paginationTotalPages
         ? paginationTotalPages
         : paginationTotalPagesInitialValue; // чтобы paginationTotalPages точно был не undefined
@@ -90,6 +96,7 @@ function filtersReducer(
       break;
     }
     case filtersReducerTypes.setSearchQuery: {
+      //
       draft.searchQuery = searchQuery;
       break;
     }
@@ -114,11 +121,13 @@ export const filtersReducerTypes = {
   resetFilters: "resetFilters",
 };
 
+//Перепонос(в API genres)
 export interface IGenre {
   id: number;
   name: string;
 }
 
+//Перепонос
 export interface IFilters {
   years: [number, number];
   minMaxYears: [number, number];
@@ -131,12 +140,14 @@ export interface IFilters {
   searchQuery?: string;
 }
 
+//Перепонос
 export interface IfiltersSortingTypes {
   value: string;
   label: string;
   selected: boolean;
 }
 
+//не нужен
 export interface IAction {
   type: string;
   sortingType?: string;
@@ -149,11 +160,13 @@ export interface IAction {
   searchQuery?: string;
 }
 
+//Переворот
 export const filtersSortingTypes = {
   byPopularity: "byPopularity",
   byRating: "byRating",
 };
 
+//Переврот
 export const filtersInitialValues: IFilters = {
   filtersSortingTypes: [
     {
