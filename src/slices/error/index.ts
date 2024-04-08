@@ -24,6 +24,4 @@ export const errorSlice = createSlice({
 });
 4;
 
-export default errorSlice.reducer;
-
-export const { actions } = errorSlice;
+export const { actions, reducer } = errorSlice;

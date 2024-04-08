@@ -16,7 +16,7 @@ export const genresSlice = createApi({
   }),
   tagTypes: ["genres"],
   endpoints: (build) => ({
-    getGenres: build.query<IGenre, void>({
+    getGenres: build.query<IGenre[], void>({
       query: () => "/",
     }),
   }),

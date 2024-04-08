@@ -4,7 +4,7 @@ import { filtersYearsType, sortingValuesType } from "./types";
 import { IGenre } from "../../API/genres/types";
 
 export const filters = createSlice({
-  name: "filtersSlice",
+  name: "filters",
   initialState: filtersInitialValues,
   reducers: {
     setSorting: (
@@ -49,4 +49,4 @@ export const filters = createSlice({
   },
 });
 
-export const { actions } = filters;
+export const { actions, reducer } = filters;

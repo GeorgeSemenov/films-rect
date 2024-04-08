@@ -1,46 +1,32 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import {
-  useFilters,
-  filtersReducerTypes,
-  useFiltersDispatch,
-  filtersInitialValues,
-  IGenre,
-} from "../../context/filtersContext";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import Checkbox from "@mui/material/Checkbox";
-import fetchGenres from "../../API/fetchGenres";
+import useFilters from "../../hooks/useFilters";
+import useActions from "../../hooks/useActions";
+import { IGenre } from "../../API/genres/types";
+import { useGetGenresQuery } from "../../API/genres";
 
-export default function Filters__genres({ className = "" }: propsInterface) {
+export default function Filters__genres({
+  className = "",
+}: {
+  className?: string;
+}) {
+  const { setCheckedGenres, setError, setGenres } = useActions();
+  const { error: fetchGenresError, data: uploadedGenres } = useGetGenresQuery();
+  if (fetchGenresError) {
+    setError({ error: new Error("Ошибка при загрузке списка жанров") });
+  } else {
+    if (uploadedGenres) setGenres(uploadedGenres);
+  }
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
-  const filtersDispatch = useFiltersDispatch();
-  const filters = useFilters();
-  const genres = filters?.genres ?? filtersInitialValues.genres;
-
-  function setNewGenres(newGenres: IGenre[], isForFetchGenres = true) {
-    if (typeof filtersDispatch === "function") {
-      filtersDispatch({
-        type: isForFetchGenres
-          ? filtersReducerTypes.setGenres
-          : filtersReducerTypes.setCheckedGenres,
-        [isForFetchGenres ? "genres" : "checkedGenres"]: newGenres,
-      });
-    } else {
-      console.warn("filtersDispatch isn't in context");
-    }
-  }
-
-  useEffect(() => {
-    fetchGenres().then((genres) => {
-      setNewGenres(genres);
-    });
-  }, []);
+  const { genres } = useFilters();
 
   function handleGenreCheck(e: any, checkedGenres: IGenre[]) {
-    setNewGenres(checkedGenres, false);
+    setCheckedGenres(checkedGenres);
   }
   return (
     <Autocomplete
@@ -67,8 +53,4 @@ export default function Filters__genres({ className = "" }: propsInterface) {
       )}
     />
   );
-}
-
-interface propsInterface {
-  className?: string;
 }
