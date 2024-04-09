@@ -1,23 +1,11 @@
-import { TOKEN } from "../../constants";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { URLs } from "../../constants";
-import { IGenre } from "../../context/filtersContext";
+import { genresRelativeUrl } from "../../constants";
+import { api } from "../api";
+import { IGenre } from "./types";
 
-export const genresSlice = createApi({
-  reducerPath: "themovieDBApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: URLs.genres.toString(),
-    prepareHeaders: (headers) => {
-      headers.set("accept", "application/json");
-      headers.set("content-type", "application/json");
-      headers.set("Authorization", `Bearer ${TOKEN}`);
-      return headers;
-    },
-  }),
-  tagTypes: ["genres"],
+const genresApi = api.injectEndpoints({
   endpoints: (build) => ({
     getGenres: build.query<IGenre[], void>({
-      query: () => "/",
+      query: () => genresRelativeUrl,
       transformResponse(baseQueryReturnValue: { genres: IGenre[] }, meta, arg) {
         return baseQueryReturnValue?.genres;
       },
@@ -25,4 +13,4 @@ export const genresSlice = createApi({
   }),
 });
 
-export const { useGetGenresQuery } = genresSlice;
+export const { useGetGenresQuery } = genresApi;

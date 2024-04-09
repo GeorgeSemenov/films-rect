@@ -1,6 +1,7 @@
 //полное API можно найти тут : https://developer.themoviedb.org/reference/search-movie
 export const selectValues = {};
 
+//Перенёс в api/films/types
 export interface IFilm {
   adult?: boolean;
   backdrop_path?: string;
@@ -20,6 +21,7 @@ export interface IFilm {
   href: string;
 }
 
+//Перенёс в api/films/types
 export interface IFavoriteFilm {
   id: number;
 }
@@ -35,6 +37,9 @@ export interface ICookieSetOptions {
 }
 
 export const urlBase = "https://api.themoviedb.org";
+export const genresRelativeUrl = "/3/genre/movie/list?language=ru";
+export const filmsPopularRelativeUrl = "/3/movie/popular";
+export const filmsTopRatedRelativeUrl = "/3/movie/top_rated";
 export const URLs = {
   popular: new URL("/3/movie/popular", urlBase),
   topRated: new URL("/3/movie/top_rated", urlBase),
@@ -45,6 +50,7 @@ export const imgServerPrefix = "https://image.tmdb.org/t/p/w220_and_h330_face/";
 export const imgPostersServerPrefix =
   "https://image.tmdb.org/t/p/w600_and_h900_bestv2/";
 
+//Зачем это?
 export const films = [
   {
     href: "#!",
@@ -96,6 +102,7 @@ export const cookiesNames = {
   accountId: "accountId",
 };
 
+//Взадчем это?
 export interface IFetchedFilmsDataWithPaginationData {
   //Когда мы запрашиваем фильмы вместе со
   //списком фильмов мы должны получить и колличество страниц в списке
@@ -103,6 +110,7 @@ export interface IFetchedFilmsDataWithPaginationData {
   paginationTotalPages: number;
 }
 
+//Перенёс в api/films/index.ts (переименовал в IFetchedFilms)
 export interface IFetchFilmsResponse {
   results: IFilm[];
   total_pages: number;
