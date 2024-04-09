@@ -7,7 +7,6 @@ import Checkbox from "@mui/material/Checkbox";
 import useFilters from "../../hooks/useFilters";
 import useActions from "../../hooks/useActions";
 import { IGenre } from "../../API/genres/types";
-import { useGetGenresQuery } from "../../API/genres";
 
 export default function Filters__genres({
   className = "",

@@ -43,8 +43,7 @@ export const filters = createSlice({
       state.searchQuery = query;
     },
     resetFilters: (state) => {
-      state = filtersInitialValues;
-      //Приделать подтягивание колличества страничек paginationTotalPages
+      return filtersInitialValues;
     },
   },
 });

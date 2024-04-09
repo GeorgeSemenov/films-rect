@@ -30,7 +30,7 @@ export function useFilters() {
   return useContext(FiltersContext);
 }
 
-export function useFiltersDispatch() {
+function useFiltersDispatch() {
   return useContext(FiltersDispatchContext);
 }
 
