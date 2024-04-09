@@ -4,7 +4,7 @@ import { IDisplayedError } from "./types";
 const initialState: IDisplayedError = {
   error: null,
 };
-const defaultDisplayDuration = "1s";
+const defaultDisplayDuration = "10s";
 const defaultDisplayDelay = "0s";
 
 export const errorSlice = createSlice({

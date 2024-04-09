@@ -14,13 +14,8 @@ export default function Filters__genres({
 }: {
   className?: string;
 }) {
-  const { setCheckedGenres, setError, setGenres } = useActions();
-  const { error: fetchGenresError, data: uploadedGenres } = useGetGenresQuery();
-  if (fetchGenresError) {
-    setError({ error: new Error("Ошибка при загрузке списка жанров") });
-  } else {
-    if (uploadedGenres) setGenres(uploadedGenres);
-  }
+  const { setCheckedGenres } = useActions();
+
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   const { genres } = useFilters();

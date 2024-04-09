@@ -6,7 +6,7 @@ import { IGenre } from "../../context/filtersContext";
 export const genresSlice = createApi({
   reducerPath: "themovieDBApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: URLs.genres.toString(),
+    baseUrl: "URLs.genres.toString()",
     prepareHeaders: (headers) => {
       headers.set("accept", "application/json");
       headers.set("content-type", "application/json");
@@ -17,7 +17,12 @@ export const genresSlice = createApi({
   tagTypes: ["genres"],
   endpoints: (build) => ({
     getGenres: build.query<IGenre[], void>({
-      query: () => "/",
+      query: () => "/pidr/",
+      transformResponse(baseQueryReturnValue: { genres: IGenre[] }, meta, arg) {
+        console.warn(`meta = `, meta);
+        console.warn(`art = `, arg);
+        return baseQueryReturnValue?.genres;
+      },
     }),
   }),
 });
