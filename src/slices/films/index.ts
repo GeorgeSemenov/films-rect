@@ -12,3 +12,5 @@ export const filmsSlice = createSlice({
     },
   },
 });
+
+export const { actions, reducer } = filmsSlice;

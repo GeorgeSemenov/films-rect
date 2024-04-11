@@ -12,8 +12,11 @@ import FetchErrorWindow from "../FetchErrorWindow";
 import filmsListUseEffectFunction from "./filmsListUseEffectFunction";
 import { useCookies } from "react-cookie";
 import useActions from "../../hooks/useActions";
+import useFilms from "../../hooks/useFilms";
 
 export default function FilmsList() {
+  // const films = useFilms();
+  // const {setFilms} = useActions();
   const [films, setFilms] = useState<IFilm[]>([]);
   const [isFetchFilmsFailed, setIsFetchFilmsFailed] = useState(false);
   const [isLoading, setIsLoading] = useState(true);

@@ -12,41 +12,19 @@ import useActions from "../../hooks/useActions";
 import { filtersInitialValues } from "../../slices/filters/values";
 import { sortingValuesType } from "../../slices/filters/types";
 import useFilters from "../../hooks/useFilters";
-import { useGetGenresQuery } from "../../API/genres";
 
 export default function Filters({
+  initiateFiltersByFetchedData,
   className = "",
   wrapperClassName,
 }: {
+  initiateFiltersByFetchedData: () => void;
   className?: string;
   wrapperClassName?: string;
 }) {
   const firstPaginationPage = 1;
-  const {
-    isLoading: isLoadingGenres,
-    data: fethcedGenres,
-    error: errorFetchedGenres,
-  } = useGetGenresQuery();
-  const {
-    resetFilters,
-    setPaginationPage,
-    setSearchQuery,
-    setSorting,
-    setGenres,
-    setError,
-  } = useActions();
-
-  function initiateFiltersByFetchedData() {
-    if (fethcedGenres) setGenres(fethcedGenres);
-    //TODO нужно ещё добавить полное колличество страниц
-  }
-  if (!isLoadingGenres) {
-    if (errorFetchedGenres) {
-      setError({ error: new Error("Невозможно подгрузить данные ") });
-    } else {
-      initiateFiltersByFetchedData();
-    }
-  }
+  const { resetFilters, setSearchQuery, setPaginationPage, setSorting } =
+    useActions();
   const filters = useFilters();
   function onReset() {
     resetFilters();
