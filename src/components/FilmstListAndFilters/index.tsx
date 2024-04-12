@@ -4,11 +4,7 @@ import FilmsList from "../FilmsList";
 import { useGetGenresQuery } from "../../API/genres";
 import useActions from "../../hooks/useActions";
 import useFilters from "../../hooks/useFilters";
-import {
-  useGetFilmsPopularQuery,
-  useGetFilmsTopRatedQuery,
-} from "../../API/films";
-import { sortingValuesType } from "../../slices/filters/types";
+import { useGetFilmsQuery } from "../../API/films";
 import { IFilm } from "../../API/films/types";
 
 export default function FilmsListAndFilters() {
@@ -18,36 +14,34 @@ export default function FilmsListAndFilters() {
     error: errorFetchedGenres,
   } = useGetGenresQuery();
 
-  let fetchedFilmsRequest;
   const filters = useFilters();
-  const sortedByPopularity: sortingValuesType = "byPopularity";
-  if (filters?.checkedSortingType === sortedByPopularity) {
-    fetchedFilmsRequest = useGetFilmsPopularQuery();
-  } else {
-    fetchedFilmsRequest = useGetFilmsTopRatedQuery();
-  }
-  const { setGenres, setError, setTotalPaginationPages } = useActions();
+  const {
+    isLoading: isLoadingFilms,
+    error: errorFetchedFilms,
+    data: fetchedFilmsData,
+  } = useGetFilmsQuery(filters);
+
+  const { setGenres, setError, setTotalPaginationPages, setFilms } =
+    useActions();
 
   //локальная инициализация фильтров, фильмов и избранных фильмов
-  if (!isLoadingGenres && !fetchedFilmsRequest.isLoading) {
-    if (errorFetchedGenres || fetchedFilmsRequest.isError) {
+  if (!isLoadingGenres && !isLoadingFilms) {
+    if (errorFetchedGenres || errorFetchedFilms) {
       setError({ error: new Error("Невозможно подгрузить данные ") });
     } else {
       initiateFiltersByFetchedData();
-      if (fetchedFilmsRequest.data?.total_pages)
-        setTotalPaginationPages(fetchedFilmsRequest.data?.total_pages);
 
-      const films: IFilm[] = fetchedFilmsRequest.data?.results
-        ? fetchedFilmsRequest.data?.results
+      const films: IFilm[] = fetchedFilmsData?.results
+        ? fetchedFilmsData?.results
         : [];
+      setFilms(films);
     }
   }
 
-  // const {} = useGet
   function initiateFiltersByFetchedData() {
     if (fetchedGenres) setGenres(fetchedGenres);
-
-    //TODO нужно ещё добавить полное колличество страниц
+    if (fetchedFilmsData?.total_pages)
+      setTotalPaginationPages(fetchedFilmsData?.total_pages);
   }
   return (
     <div style={{ display: "flex" }}>

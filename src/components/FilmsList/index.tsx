@@ -13,7 +13,7 @@ import filmsListUseEffectFunction from "./filmsListUseEffectFunction";
 import { useCookies } from "react-cookie";
 import useActions from "../../hooks/useActions";
 import useFilms from "../../hooks/useFilms";
-import { IFavoriteFilm, IFilm } from "../../API/films/types";
+import { IFilm } from "../../API/films/types";
 
 export default function FilmsList() {
   // const films = useFilms();
@@ -44,15 +44,15 @@ export default function FilmsList() {
   }
   const { setError } = useActions();
   useEffect(() => {
-    filmsListUseEffectFunction({
-      setIsFetchFilmsFailed,
-      filters,
-      setFilms,
-      setIsLoading,
-      filtersDispatch,
-      setCookie,
-      setError,
-    });
+    // filmsListUseEffectFunction({
+    //   setIsFetchFilmsFailed,
+    //   filters,
+    //   setFilms,
+    //   setIsLoading,
+    //   filtersDispatch,
+    //   setCookie,
+    //   setError,
+    // });
   }, [filters.checkedSortingType, filters.paginationPage, filters.searchQuery]);
   const filteredFilmsList = films.filter((film: IFilm) => {
     let isGenresSuitable = !filters.checkedGenres.length;
@@ -100,7 +100,7 @@ export default function FilmsList() {
                     marginRight: "15px",
                   }}
                 >
-                  <FilmCard film={film} updateFilms={updateFilms} />
+                  {/* <FilmCard film={film} updateFilms={updateFilms} /> */}
                 </li>
               );
             })
