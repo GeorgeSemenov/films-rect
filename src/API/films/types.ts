@@ -13,15 +13,10 @@ export interface IFilm {
   video?: boolean;
   vote_average?: number;
   vote_count?: number;
-  isFavorite: boolean;
   href: string;
 }
 
-export interface IFavoriteFilm {
-  id: number;
-}
-
-export interface IFetchedFilms {
+export interface IFetchedFilmsResponse {
   results: IFilm[];
   total_pages: number;
 }

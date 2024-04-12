@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import FilmCard from "../FilmCard";
-import { IFilm, cookiesNames } from "../../constants";
+import { cookiesNames } from "../../constants";
 import {
   filtersInitialValues,
   useFilters,
@@ -13,6 +13,7 @@ import filmsListUseEffectFunction from "./filmsListUseEffectFunction";
 import { useCookies } from "react-cookie";
 import useActions from "../../hooks/useActions";
 import useFilms from "../../hooks/useFilms";
+import { IFavoriteFilm, IFilm } from "../../API/films/types";
 
 export default function FilmsList() {
   // const films = useFilms();

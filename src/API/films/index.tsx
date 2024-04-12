@@ -3,14 +3,14 @@ import {
   filmsTopRatedRelativeUrl,
 } from "../../constants";
 import { api } from "../api";
-import { IFetchedFilms, IFilm } from "./types";
+import { IFetchedFilmsResponse } from "./types";
 
 const filmsApi = api.injectEndpoints({
   endpoints: (build) => ({
-    getFilmsPopular: build.query<IFetchedFilms, void>({
+    getFilmsPopular: build.query<IFetchedFilmsResponse, void>({
       query: () => filmsPopularRelativeUrl,
     }),
-    getFilmsTopRated: build.query<IFetchedFilms, void>({
+    getFilmsTopRated: build.query<IFetchedFilmsResponse, void>({
       query: () => filmsTopRatedRelativeUrl,
     }),
   }),

@@ -1,7 +1,7 @@
 import { IFilters } from "./types";
 
 export const filtersInitialValues: IFilters = {
-  filtersSortingTypes: [
+  sortingTypes: [
     {
       value: "byPopularity",
       label: "По популярности",

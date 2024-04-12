@@ -49,7 +49,7 @@ export default function Filters({
         />
         <SelectComponent
           label="Сортировать по"
-          selectOptions={filtersInitialValues.filtersSortingTypes}
+          selectOptions={filtersInitialValues.sortingTypes}
           className="filters__select"
           handleChange={(e: SelectChangeEvent) => {
             setSorting(e.target.value as sortingValuesType);

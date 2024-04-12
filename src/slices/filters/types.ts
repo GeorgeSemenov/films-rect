@@ -3,7 +3,7 @@ import { IGenre } from "../../API/genres/types";
 export interface IFilters {
   years: filtersYearsType;
   minMaxYears: [number, number];
-  filtersSortingTypes: IfiltersSortingTypes[];
+  sortingTypes: ISortingTypes[];
   checkedSortingType: sortingValuesType;
   genres: IGenre[];
   checkedGenres: IGenre[];
@@ -12,7 +12,7 @@ export interface IFilters {
   searchQuery?: string;
 }
 
-interface IfiltersSortingTypes {
+interface ISortingTypes {
   value: sortingValuesType;
   label: sortingLabelsType;
   selected: boolean;
