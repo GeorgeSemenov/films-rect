@@ -5,10 +5,13 @@ import useActions from "../../hooks/useActions";
 
 export default function Filters__pagination({
   className,
+  paginationPage,
+  paginationTotalPages,
 }: {
   className?: string;
+  paginationPage;
+  paginationTotalPages;
 }) {
-  const { paginationPage, paginationTotalPages } = useFilters();
   const { setPaginationPage } = useActions();
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPaginationPage(value);

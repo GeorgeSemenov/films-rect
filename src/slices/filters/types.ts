@@ -7,7 +7,6 @@ export interface IFilters {
   checkedSortingType: sortingValuesType;
   genres: IGenre[];
   checkedGenres: IGenre[];
-  paginationTotalPages: number;
   paginationPage: number;
   searchQuery?: string;
 }

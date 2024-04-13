@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./styles.scss";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
@@ -12,6 +12,7 @@ import useActions from "../../hooks/useActions";
 import { filtersInitialValues } from "../../slices/filters/values";
 import { sortingValuesType } from "../../slices/filters/types";
 import useFilters from "../../hooks/useFilters";
+import useFilms from "../../hooks/useFilms";
 
 export default function Filters({
   initiateFiltersByFetchedData,
@@ -26,6 +27,7 @@ export default function Filters({
   const { resetFilters, setSearchQuery, setPaginationPage, setSorting } =
     useActions();
   const filters = useFilters();
+  const { totalPages } = useFilms();
   function onReset() {
     resetFilters();
     initiateFiltersByFetchedData();
@@ -59,7 +61,10 @@ export default function Filters({
         />
         <Filters__years className="filters__years" />
         <Filters__genres className="filters__select" />
-        <Filters__pagination />
+        <Filters__pagination
+          paginationPage={filters.paginationPage}
+          paginationTotalPages={totalPages}
+        />
       </form>
     </aside>
   );

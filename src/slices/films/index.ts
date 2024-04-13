@@ -1,15 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { IFilm } from "../../API/films/types";
+import { FilmsDataType } from "./types";
 
-const initialState: IFilm[] = [];
+const initialState: FilmsDataType = { films: [], totalPages: 1 };
 
 export const filmsSlice = createSlice({
   name: "films",
   initialState,
   reducers: {
-    setFilms: (state, { payload: films }: { payload: IFilm[] }) => {
-      return films;
-    },
+    setFilmsData: (
+      state,
+      { payload: { films, totalPages } }: { payload: FilmsDataType }
+    ) => ({ films, totalPages }),
   },
 });
 

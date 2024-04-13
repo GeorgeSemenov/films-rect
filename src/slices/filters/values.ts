@@ -35,7 +35,6 @@ export const filtersInitialValues: IFilters = {
   checkedGenres: [],
   years: [1960, 2023],
   minMaxYears: [1950, 2023],
-  paginationTotalPages: 1,
   paginationPage: 1,
   searchQuery: "",
 };

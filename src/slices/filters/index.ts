@@ -31,14 +31,6 @@ export const filters = createSlice({
     ) => {
       state.paginationPage = paginationPage;
     },
-    setTotalPaginationPages: (
-      state,
-      { payload: paginationTotalPages }: { payload: number }
-    ) => {
-      state.paginationTotalPages = paginationTotalPages
-        ? paginationTotalPages
-        : state.paginationTotalPages; // чтобы paginationTotalPages точно был не undefined
-    },
     setSearchQuery: (state, { payload: query }: { payload: string }) => {
       state.searchQuery = query;
     },
