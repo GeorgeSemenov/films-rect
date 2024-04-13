@@ -9,8 +9,8 @@ export default function Filters__pagination({
   paginationTotalPages,
 }: {
   className?: string;
-  paginationPage;
-  paginationTotalPages;
+  paginationPage: number;
+  paginationTotalPages: number;
 }) {
   const { setPaginationPage } = useActions();
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {

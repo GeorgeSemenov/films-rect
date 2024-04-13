@@ -5,7 +5,8 @@ import MainPage from "./pages/MainPage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./pages/ErrorPage";
 import FilmPage from "./pages/FilmsPage";
-import FilmsListAndFilters from "./components/FilmstListAndFilters";
+
+import FilmsListAndFilters from "./components/FilmsListAndFilters";
 
 const router = createBrowserRouter([
   {

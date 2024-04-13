@@ -38,8 +38,9 @@ export interface ICookieSetOptions {
 
 export const urlBase = "https://api.themoviedb.org";
 export const genresRelativeUrl = "/3/genre/movie/list?language=ru";
-export const filmsPopularRelativeUrl = "/3/movie/popular";
-export const filmsTopRatedRelativeUrl = "/3/movie/top_rated";
+export const filmsPopularRelativeUrl = "/3/movie/popular?language=ru";
+export const filmsTopRatedRelativeUrl = "/3/movie/top_rated?language=ru";
+export const accountIdRelativeUrl = "/3/account/account_id?language=ru";
 export const URLs = {
   popular: new URL("/3/movie/popular", urlBase),
   topRated: new URL("/3/movie/top_rated", urlBase),

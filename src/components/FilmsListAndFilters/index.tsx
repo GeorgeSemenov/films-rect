@@ -5,16 +5,21 @@ import { useGetGenresQuery } from "../../API/genres";
 import useActions from "../../hooks/useActions";
 import useFilters from "../../hooks/useFilters";
 import { useGetFilmsQuery } from "../../API/films";
-import { IFilm } from "../../API/films/types";
 import { FilmsDataType } from "../../slices/films/types";
+import { useGetUseridQuery } from "../../API/user";
 
 export default function FilmsListAndFilters() {
+  const { isLoading, data: id } = useGetUseridQuery();
+  if (!isLoading) {
+    console.warn(`id = ${JSON.stringify(id)}`);
+  }
   const {
     isLoading: isLoadingGenres,
     data: fetchedGenres,
     error: errorFetchedGenres,
   } = useGetGenresQuery();
 
+  // const {} = useGetFavorigeFilms();
   const filters = useFilters();
   const {
     isLoading: isLoadingFilms,
