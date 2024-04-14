@@ -1,9 +1,10 @@
 import { accountIdRelativeUrl } from "../../constants";
 import { api } from "../api";
+import { IUser } from "./types";
 
 const userApi = api.injectEndpoints({
   endpoints: (build) => ({
-    getUserid: build.query<number, void>({
+    getUserid: build.query<IUser, void>({
       query: () => accountIdRelativeUrl,
     }),
   }),

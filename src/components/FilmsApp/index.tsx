@@ -12,6 +12,7 @@ import PopupWindow from "../PopupWindow";
 export default function FilmsApp() {
   const displayedError = useDisplayedError();
   const [cookies] = useCookies([cookiesNames.isAuthorized]);
+
   return (
     <FiltersProvider>
       <Header />

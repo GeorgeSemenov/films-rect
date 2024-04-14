@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { IFilm } from "../../API/films/types";
 import { FilmsDataType } from "./types";
 
 const initialState: FilmsDataType = { films: [], totalPages: 1 };

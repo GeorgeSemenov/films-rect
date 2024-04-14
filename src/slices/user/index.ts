@@ -1,15 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { IUser } from "./types";
-
-const initialState: IUser | null = null;
+import { IUser } from "../../API/user/types";
+import { initialUserState as initialState } from "./values";
 
 export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUser: (state: IUser | null, { payload: user }: { payload: number }) => {
-      return;
-    },
+    setUser: (state: IUser, { payload: fetchedUser }: { payload: IUser }) => ({
+      ...fetchedUser,
+    }),
   },
 });
 
