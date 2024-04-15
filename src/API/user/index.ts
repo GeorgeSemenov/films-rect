@@ -4,10 +4,10 @@ import { IUser } from "./types";
 
 const userApi = api.injectEndpoints({
   endpoints: (build) => ({
-    getUserid: build.query<IUser, void>({
+    getUser: build.query<IUser, void>({
       query: () => accountIdRelativeUrl,
     }),
   }),
 });
 
-export const { useGetUseridQuery } = userApi;
+export const { useGetUserQuery } = userApi;

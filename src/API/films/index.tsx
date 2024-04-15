@@ -1,9 +1,11 @@
 import {
   filmsPopularRelativeUrl,
   filmsTopRatedRelativeUrl,
+  urlBase,
 } from "../../constants";
 import { IFilters, sortingValuesType } from "../../slices/filters/types";
 import { api } from "../api";
+import { IUser } from "../user/types";
 import { IFetchedFilmsResponse } from "./types";
 
 const filmsApi = api.injectEndpoints({
@@ -21,7 +23,14 @@ const filmsApi = api.injectEndpoints({
         }
       },
     }),
+    getFavoriteFilms: build.query<
+      IFetchedFilmsResponse,
+      { user: IUser; page: number }
+    >({
+      query: ({ user, page }) =>
+        `${urlBase}/3/account/${user.id}/favorite/movies?page=${page}`,
+    }),
   }),
 });
 
-export const { useGetFilmsQuery } = filmsApi;
+export const { useGetFilmsQuery, useGetFavoriteFilmsQuery } = filmsApi;

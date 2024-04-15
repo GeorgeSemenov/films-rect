@@ -4,8 +4,9 @@ import FilmsList from "../FilmsList";
 import { useGetGenresQuery } from "../../API/genres";
 import useActions from "../../hooks/useActions";
 import useFilters from "../../hooks/useFilters";
-import { useGetFilmsQuery } from "../../API/films";
+import { useGetFavoriteFilmsQuery, useGetFilmsQuery } from "../../API/films";
 import { FilmsDataType } from "../../slices/films/types";
+import { useGetUserQuery } from "../../API/user";
 
 export default function FilmsListAndFilters() {
   const {
@@ -14,7 +15,6 @@ export default function FilmsListAndFilters() {
     error: errorFetchedGenres,
   } = useGetGenresQuery();
 
-  // const {} = useGetFavorigeFilms();
   const filters = useFilters();
   const {
     isLoading: isLoadingFilms,
@@ -22,11 +22,18 @@ export default function FilmsListAndFilters() {
     data: fetchedFilmsData,
   } = useGetFilmsQuery(filters);
 
-  const { setGenres, setError, setFilmsData } = useActions();
+  const {
+    isLoading: isLoadingUser,
+    error: errorFetchedUser,
+    data: fetchedUser,
+  } = useGetUserQuery();
+
+  useGetFavoriteFilmsQuery({ user: fetchedUser, page: 1 });
+  const { setGenres, setError, setFilmsData, setUser } = useActions();
 
   //локальная инициализация фильтров, фильмов и избранных фильмов
-  if (!isLoadingGenres && !isLoadingFilms) {
-    if (errorFetchedGenres || errorFetchedFilms) {
+  if (!isLoadingGenres && !isLoadingFilms && !isLoadingUser) {
+    if (errorFetchedGenres || errorFetchedFilms || errorFetchedUser) {
       setError({ error: new Error("Невозможно подгрузить данные ") });
     } else {
       initiateFiltersByFetchedData();
@@ -37,6 +44,9 @@ export default function FilmsListAndFilters() {
           : 1,
       };
       setFilmsData(filmsData);
+      if (fetchedUser) {
+        setUser(fetchedUser);
+      }
     }
   }
 
