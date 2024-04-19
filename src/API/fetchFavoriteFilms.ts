@@ -1,30 +1,35 @@
-import { IFavoriteFilm, IFetchFilmsResponse, urlBase } from "../constants";
+import { urlBase } from "../constants";
+import { IFavoriteFilm } from "../slices/favoriteFilms/types";
 import fetchData from "./fetchData";
+import { IFetchedFilmsResponse } from "./films/types";
+import { IUser } from "./user/types";
 
 export async function fetchFavoriteFilmsResponse(accountId: number, page = 1) {
-  try {
-    const favoriteFilmsResponse: IFetchFilmsResponse = await fetchData({
-      url: `${urlBase}/3/account/${accountId}/favorite/movies?page=${page}`,
-    });
-    return favoriteFilmsResponse;
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
+  const favoriteFilmsResponse: IFetchedFilmsResponse = await fetchData({
+    url: `${urlBase}/3/account/${accountId}/favorite/movies?page=${page}`,
+  });
+  return favoriteFilmsResponse;
 }
 
 export default async function fetchAllFavoriteFilms(
-  accountId: number
-): Promise<IFavoriteFilm[]> {
+  user: IUser
+): Promise<{ favoriteFilms?: IFavoriteFilm[]; error?: Error }> {
   let pageOfFavoriteFilms = 1;
   let favoriteFilmsResponse;
   let allFavoriteFilms: IFavoriteFilm[] = [];
-  do {
-    favoriteFilmsResponse = await fetchFavoriteFilmsResponse(accountId);
-    pageOfFavoriteFilms++;
-    allFavoriteFilms = allFavoriteFilms.concat(
-      favoriteFilmsResponse.results as IFavoriteFilm[]
-    );
-  } while (pageOfFavoriteFilms <= favoriteFilmsResponse.total_pages);
-  return allFavoriteFilms;
+  try {
+    do {
+      favoriteFilmsResponse = await fetchFavoriteFilmsResponse(
+        user.id,
+        pageOfFavoriteFilms
+      );
+      pageOfFavoriteFilms++;
+      allFavoriteFilms = allFavoriteFilms.concat(
+        favoriteFilmsResponse.results as IFavoriteFilm[]
+      );
+    } while (pageOfFavoriteFilms <= favoriteFilmsResponse.total_pages);
+  } catch (e) {
+    return { error: new Error("There is error occured, while") };
+  }
+  return { favoriteFilms: allFavoriteFilms };
 }

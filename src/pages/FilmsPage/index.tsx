@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import fetchFilmData from "../../API/fetchFilmData";
 import { filmDataInitialvalue, imgPostersServerPrefix } from "../../constants";
-import FetchErrorWindow from "../../components/FetchErrorWindow";
 
 export default function filmPage() {
   const { filmID } = useParams();
@@ -41,7 +40,7 @@ export default function filmPage() {
       ? filmData.credits.cast.slice(0, 5).concat([{ name: "..." }])
       : filmData.credits.cast;
   return isFetchFailed ? (
-    <FetchErrorWindow />
+    <p>Не удалось подгрузить данные о фильме.</p>
   ) : (
     <>
       {isLoading ? (

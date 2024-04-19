@@ -7,6 +7,7 @@ import useFilters from "../../hooks/useFilters";
 import { useGetFavoriteFilmsQuery, useGetFilmsQuery } from "../../API/films";
 import { FilmsDataType } from "../../slices/films/types";
 import { useGetUserQuery } from "../../API/user";
+import { CircularProgress } from "@mui/material";
 
 export default function FilmsListAndFilters() {
   const {
@@ -28,7 +29,13 @@ export default function FilmsListAndFilters() {
     data: fetchedUser,
   } = useGetUserQuery();
 
-  useGetFavoriteFilmsQuery({ user: fetchedUser, page: 1 });
+  let isFavFilmsLoaded = false;
+  if (fetchedUser) {
+    isFavFilmsLoaded = useGetFavoriteFilmsQuery({
+      user: fetchedUser,
+      page: 1,
+    }).isLoading;
+  }
   const { setGenres, setError, setFilmsData, setUser } = useActions();
 
   //локальная инициализация фильтров, фильмов и избранных фильмов
@@ -56,7 +63,13 @@ export default function FilmsListAndFilters() {
   return (
     <div style={{ display: "flex" }}>
       <Filters initiateFiltersByFetchedData={initiateFiltersByFetchedData} />
-      <FilmsList />
+      {isLoadingUser ? (
+        <CircularProgress style={{ width: 150, height: 150 }} />
+      ) : fetchedUser ? (
+        <FilmsList user={fetchedUser} />
+      ) : (
+        <p>Не удалось подгрузить данные о пользователе</p>
+      )}
     </div>
   );
 }

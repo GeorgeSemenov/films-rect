@@ -4,35 +4,29 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { IFilm, cookiesNames, imgServerPrefix } from "../../constants";
+import { cookiesNames, imgServerPrefix } from "../../constants";
 import { Button, CardActionArea, CardActions, IconButton } from "@mui/material";
 import { StarBorder, Star } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { postFavoriteFilm } from "../../API/postFavoriteFilmsList";
 import { useCookies } from "react-cookie";
 import useActions from "../../hooks/useActions";
+import { IFilm } from "../../API/films/types";
 
 export default function FilmCard({
   film,
-  updateFilms,
+  isFavorite,
+  onFavButtonClick,
 }: {
   film: IFilm;
-  updateFilms: (func: (films: IFilm[]) => IFilm[]) => void;
+  isFavorite: boolean;
+  onFavButtonClick: (isFav: boolean) => void;
 }) {
   const [cookie] = useCookies([cookiesNames.accountId]);
   const [isPending, setIsPending] = useState(false);
-  const { isFavorite, href, backdrop_path, title, id, vote_average } = film;
+  const { href, backdrop_path, title, id, vote_average } = film;
   const fullImageRef = imgServerPrefix + backdrop_path;
   const { setError } = useActions();
-  function updateFavorites(isThisFilmFavorite: boolean) {
-    updateFilms((films) => {
-      const film = films.find((flm: IFilm) => flm["id"] === id);
-      if (film) {
-        film.isFavorite = isThisFilmFavorite;
-      }
-      return films;
-    });
-  }
   return (
     <Card sx={{ maxWidth: 345 }}>
       <Link to={href}>
@@ -58,7 +52,7 @@ export default function FilmCard({
         </div>
         <IconButton
           onClick={() => {
-            updateFavorites(!isFavorite);
+            onFavButtonClick(!isFavorite);
 
             let isFavoriteBeforeClick: boolean;
             if (!isPending) {
@@ -72,7 +66,7 @@ export default function FilmCard({
                     displayDuration: "10s",
                   });
 
-                  updateFavorites(isFavoriteBeforeClick);
+                  onFavButtonClick(isFavoriteBeforeClick);
                 })
                 .finally(() => setIsPending(false));
             }

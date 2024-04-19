@@ -12,7 +12,7 @@ import useActions from "../../hooks/useActions";
 import { filtersInitialValues } from "../../slices/filters/values";
 import { sortingValuesType } from "../../slices/filters/types";
 import useFilters from "../../hooks/useFilters";
-import useFilms from "../../hooks/useFilms";
+import useFilms from "../../hooks/useFilmsData";
 
 export default function Filters({
   initiateFiltersByFetchedData,

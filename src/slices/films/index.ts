@@ -4,7 +4,7 @@ import { FilmsDataType } from "./types";
 const initialState: FilmsDataType = { films: [], totalPages: 1 };
 
 export const filmsSlice = createSlice({
-  name: "films",
+  name: "filmsData",
   initialState,
   reducers: {
     setFilmsData: (

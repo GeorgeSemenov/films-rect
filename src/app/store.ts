@@ -2,11 +2,11 @@ import { combineSlices, configureStore } from "@reduxjs/toolkit";
 import { errorSlice as error } from "../slices/error";
 import { api } from "../API/api";
 import { filters } from "../slices/filters";
-import { filmsSlice as films } from "../slices/films";
+import { filmsSlice as filmsData } from "../slices/films";
 import { favoriteFilmsSlice as favFilms } from "../slices/favoriteFilms";
 import { userSlice as user } from "../slices/user";
 
-const reducers = combineSlices(favFilms, filters, error, api, films, user);
+const reducers = combineSlices(favFilms, filters, error, api, filmsData, user);
 const middleware = [api.middleware];
 
 const store = configureStore({

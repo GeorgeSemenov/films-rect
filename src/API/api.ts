@@ -12,6 +12,6 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ["genres"],
+  tagTypes: ["genres", "films", "favFilms"],
   endpoints: () => ({}),
 });

@@ -11,6 +11,7 @@ import { IFetchedFilmsResponse } from "./types";
 const filmsApi = api.injectEndpoints({
   endpoints: (build) => ({
     getFilms: build.query<IFetchedFilmsResponse, IFilters>({
+      providesTags: ["films"],
       query: (filters: IFilters) => {
         const { paginationPage: page } = filters;
         const pageQuery = page === 0 || !page ? "" : `?page=${page}`;
@@ -27,6 +28,7 @@ const filmsApi = api.injectEndpoints({
       IFetchedFilmsResponse,
       { user: IUser; page: number }
     >({
+      providesTags: ["favFilms"],
       query: ({ user, page }) =>
         `${urlBase}/3/account/${user.id}/favorite/movies?page=${page}`,
     }),
