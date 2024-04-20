@@ -44,8 +44,7 @@ export default function Filters({
         <SearchBar
           className="filters__search-bar"
           onSearch={(searchQuery) => {
-            if (!searchQuery) return;
-            setSearchQuery(searchQuery);
+            setSearchQuery(searchQuery ? searchQuery : "");
             setPaginationPage(firstPaginationPage);
           }}
         />

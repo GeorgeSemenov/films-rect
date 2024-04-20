@@ -1,6 +1,7 @@
 import {
   filmsPopularRelativeUrl,
   filmsTopRatedRelativeUrl,
+  searchFilmsQueryUrl,
   urlBase,
 } from "../../constants";
 import { IFilters, sortingValuesType } from "../../slices/filters/types";
@@ -15,6 +16,10 @@ const filmsApi = api.injectEndpoints({
       query: (filters: IFilters) => {
         const { paginationPage: page } = filters;
         const pageQuery = page === 0 || !page ? "" : `&page=${page}`;
+
+        if (filters.searchQuery) {
+          return `${searchFilmsQueryUrl}${filters.searchQuery}${pageQuery}`;
+        }
 
         const sortedByPopularity: sortingValuesType = "byPopularity";
         if (filters?.checkedSortingType === sortedByPopularity) {

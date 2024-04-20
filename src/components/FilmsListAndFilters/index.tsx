@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Filters from "../Filters";
 import FilmsList from "../FilmsList";
 import { useGetGenresQuery } from "../../API/genres";
@@ -8,28 +8,48 @@ import { useGetFilmsQuery } from "../../API/films";
 import { FilmsDataType } from "../../slices/films/types";
 import { useGetUserQuery } from "../../API/user";
 import { CircularProgress } from "@mui/material";
+import { IFetchedFilmsResponse } from "../../API/films/types";
 
 export default function FilmsListAndFilters() {
+  const filters = useFilters();
+  const [fetchedFilmsData, setFetchedFilmsData] =
+    useState<IFetchedFilmsResponse>({ results: [], total_pages: 1 });
+  const [isLoadingFilms, setIsLoadingFilms] = useState<boolean>(true);
+  const [errorFetchedFilms, setErrorFetchedFilms] = useState("");
+  const { setGenres, setError, setFilmsData, setUser } = useActions();
+  useEffect(() => {
+    const {
+      data: fetchedFilmsData,
+      isLoading: isLoadingFilms,
+      error: errorFetchedFilms,
+    } = useGetFilmsQuery(filters);
+    if (fetchedFilmsData) {
+      setFetchedFilmsData(fetchedFilmsData);
+      setFilmsData(fetchedFilmsData);
+      setIsLoadingFilms(false);
+    }
+    if (errorFetchedFilms) {
+      setError({ error: new Error(JSON.stringify(errorFetchedFilms)) });
+      setErrorFetchedFilms(JSON.stringify(errorFetchedFilms));
+    }
+  }, [filters]);
   const {
     isLoading: isLoadingGenres,
     data: fetchedGenres,
     error: errorFetchedGenres,
   } = useGetGenresQuery();
 
-  const filters = useFilters();
-  const {
-    isLoading: isLoadingFilms,
-    error: errorFetchedFilms,
-    data: fetchedFilmsData,
-  } = useGetFilmsQuery(filters);
+  // const {
+  //   isLoading: isLoadingFilms,
+  //   error: errorFetchedFilms,
+  //   data: fetchedFilmsData,
+  // } = useGetFilmsQuery(filters);
 
   const {
     isLoading: isLoadingUser,
     error: errorFetchedUser,
     data: fetchedUser,
   } = useGetUserQuery();
-
-  const { setGenres, setError, setFilmsData, setUser } = useActions();
 
   //локальная инициализация фильтров, фильмов и избранных фильмов
   if (!isLoadingGenres && !isLoadingFilms && !isLoadingUser) {
@@ -56,7 +76,7 @@ export default function FilmsListAndFilters() {
   return (
     <div style={{ display: "flex" }}>
       <Filters initiateFiltersByFetchedData={initiateFiltersByFetchedData} />
-      {isLoadingUser ? (
+      {isLoadingUser && isLoadingFilms ? (
         <CircularProgress style={{ width: 150, height: 150 }} />
       ) : fetchedUser ? (
         <FilmsList user={fetchedUser} />
