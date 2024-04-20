@@ -14,7 +14,7 @@ const filmsApi = api.injectEndpoints({
       providesTags: ["films"],
       query: (filters: IFilters) => {
         const { paginationPage: page } = filters;
-        const pageQuery = page === 0 || !page ? "" : `?page=${page}`;
+        const pageQuery = page === 0 || !page ? "" : `&page=${page}`;
 
         const sortedByPopularity: sortingValuesType = "byPopularity";
         if (filters?.checkedSortingType === sortedByPopularity) {

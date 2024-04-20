@@ -13,6 +13,15 @@ export const favoriteFilmsSlice = createSlice({
     ) {
       return favoriteFilms;
     },
+    addFavoriteFilm(state, { payload: addedFilm }: { payload: IFavoriteFilm }) {
+      state.push(addedFilm);
+    },
+    removeFavoriteFilm(
+      state,
+      { payload: removedFavoriteFilm }: { payload: IFavoriteFilm }
+    ) {
+      return [...state.filter((ff) => ff.id !== removedFavoriteFilm.id)];
+    },
   },
 });
 

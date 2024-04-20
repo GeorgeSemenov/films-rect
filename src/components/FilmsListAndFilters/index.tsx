@@ -29,13 +29,6 @@ export default function FilmsListAndFilters() {
     data: fetchedUser,
   } = useGetUserQuery();
 
-  let isFavFilmsLoaded = false;
-  if (fetchedUser) {
-    isFavFilmsLoaded = useGetFavoriteFilmsQuery({
-      user: fetchedUser,
-      page: 1,
-    }).isLoading;
-  }
   const { setGenres, setError, setFilmsData, setUser } = useActions();
 
   //локальная инициализация фильтров, фильмов и избранных фильмов

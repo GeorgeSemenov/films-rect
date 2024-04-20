@@ -27,5 +27,6 @@ module.exports = {
   plugins: ["@typescript-eslint", "react"],
   rules: {
     "no-console": ["error", { allow: ["warn", "error"] }],
+    "no-param-reassign": ["warn", { props: false }], // Добавлено правило no-param-reassign
   },
 };

@@ -6,9 +6,9 @@ export default async function handleFavoriteFilms(
   unhandledFilms: IFilm[],
   accountId: number
 ) {
-  let favoriteFilms: IFavoriteFilm[];
+  const favoriteFilms: IFavoriteFilm[] = [];
   try {
-    favoriteFilms = await fetchAllFavoriteFilms(accountId);
+    // favoriteFilms = await fetchAllFavoriteFilms(accountId);
   } catch (err) {
     console.error(`error in fetching favorite films`, err);
     throw err;

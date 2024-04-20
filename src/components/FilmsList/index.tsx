@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import getFilmYear from "../../utils/getFilmYear";
 import useFilmsData from "../../hooks/useFilmsData";
 import { IFilm } from "../../API/films/types";
@@ -11,14 +11,16 @@ import FilmCard from "../FilmCard";
 
 export default function FilmsList({ user }: { user: IUser }) {
   const favoriteFilms = useFavoriteFilms();
-  const { setFavoriteFilms, setError } = useActions();
+  const [favButtonClicketTimes, setFavButtonClicketTimes] = useState<number>(0);
+  const { setFavoriteFilms, addFavoriteFilm, removeFavoriteFilm, setError } =
+    useActions();
 
   useEffect(() => {
     fetchAllFavoriteFilms(user).then((result) => {
       if (result.favoriteFilms) setFavoriteFilms(result.favoriteFilms);
       if (result.error) setError({ error: result.error });
     });
-  }, [favoriteFilms]);
+  }, [favButtonClicketTimes]);
   const { films } = useFilmsData();
   const filters = useFilters();
 
@@ -65,9 +67,12 @@ export default function FilmsList({ user }: { user: IUser }) {
                     (favFilm) => favFilm.id === film.id
                   )}
                   onFavButtonClick={(isFavorite: boolean) => {
-                    setFavoriteFilms(
-                      favoriteFilms.filter((ff) => ff.id !== film.id)
-                    );
+                    setFavButtonClicketTimes(() => favButtonClicketTimes + 1);
+                    if (isFavorite) {
+                      removeFavoriteFilm(film);
+                    } else {
+                      addFavoriteFilm(film);
+                    }
                   }}
                 />
               </li>
