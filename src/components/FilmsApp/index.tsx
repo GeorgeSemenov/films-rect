@@ -1,7 +1,6 @@
 import React from "react";
 import "./styles.scss";
 import Header from "../Header";
-import FiltersProvider from "../../context/filtersContext";
 import { Outlet } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { cookiesNames } from "../../constants";
@@ -14,7 +13,7 @@ export default function FilmsApp() {
   const [cookies] = useCookies([cookiesNames.isAuthorized]);
 
   return (
-    <FiltersProvider>
+    <>
       <Header />
       {cookies.isAuthorized ? <Outlet /> : <LoginWindow />}
       {displayedError.error && (
@@ -31,6 +30,6 @@ export default function FilmsApp() {
           animationDelay={displayedError ? displayedError.displayDelay : "0s"}
         />
       )}
-    </FiltersProvider>
+    </>
   );
 }

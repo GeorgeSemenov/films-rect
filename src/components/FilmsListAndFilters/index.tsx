@@ -4,7 +4,7 @@ import FilmsList from "../FilmsList";
 import { useGetGenresQuery } from "../../API/genres";
 import useActions from "../../hooks/useActions";
 import useFilters from "../../hooks/useFilters";
-import { useGetFavoriteFilmsQuery, useGetFilmsQuery } from "../../API/films";
+import { useGetFilmsQuery } from "../../API/films";
 import { FilmsDataType } from "../../slices/films/types";
 import { useGetUserQuery } from "../../API/user";
 import { CircularProgress } from "@mui/material";
