@@ -67,12 +67,12 @@ export default function FilmsList({ user }: { user: IUser }) {
                     (favFilm) => favFilm.id === film.id
                   )}
                   onFavButtonClick={(isFavorite: boolean) => {
-                    setFavButtonClicketTimes(() => favButtonClicketTimes + 1);
                     if (isFavorite) {
                       removeFavoriteFilm(film);
                     } else {
                       addFavoriteFilm(film);
                     }
+                    // setFavButtonClicketTimes(() => favButtonClicketTimes + 1);
                   }}
                 />
               </li>

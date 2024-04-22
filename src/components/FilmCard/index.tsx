@@ -53,7 +53,6 @@ export default function FilmCard({
         <IconButton
           onClick={() => {
             onFavButtonClick(!isFavorite);
-
             let isFavoriteBeforeClick: boolean;
             if (!isPending) {
               setIsPending(true);

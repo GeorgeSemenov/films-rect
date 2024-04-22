@@ -12,38 +12,38 @@ import { IFetchedFilmsResponse } from "../../API/films/types";
 
 export default function FilmsListAndFilters() {
   const filters = useFilters();
-  const [fetchedFilmsData, setFetchedFilmsData] =
-    useState<IFetchedFilmsResponse>({ results: [], total_pages: 1 });
-  const [isLoadingFilms, setIsLoadingFilms] = useState<boolean>(true);
-  const [errorFetchedFilms, setErrorFetchedFilms] = useState("");
+  // const [fetchedFilmsData, setFetchedFilmsData] =
+  //   useState<IFetchedFilmsResponse>({ results: [], total_pages: 1 });
+  // const [isLoadingFilms, setIsLoadingFilms] = useState<boolean>(true);
+  // const [errorFetchedFilms, setErrorFetchedFilms] = useState("");
   const { setGenres, setError, setFilmsData, setUser } = useActions();
-  useEffect(() => {
-    const {
-      data: fetchedFilmsData,
-      isLoading: isLoadingFilms,
-      error: errorFetchedFilms,
-    } = useGetFilmsQuery(filters);
-    if (fetchedFilmsData) {
-      setFetchedFilmsData(fetchedFilmsData);
-      setFilmsData(fetchedFilmsData);
-      setIsLoadingFilms(false);
-    }
-    if (errorFetchedFilms) {
-      setError({ error: new Error(JSON.stringify(errorFetchedFilms)) });
-      setErrorFetchedFilms(JSON.stringify(errorFetchedFilms));
-    }
-  }, [filters]);
+  // useEffect(() => {
+  //   const {
+  //     data: fetchedFilmsData,
+  //     isLoading: isLoadingFilms,
+  //     error: errorFetchedFilms,
+  //   } = useGetFilmsQuery(filters);
+  //   if (fetchedFilmsData) {
+  //     setFetchedFilmsData(fetchedFilmsData);
+  //     setFilmsData(fetchedFilmsData);
+  //     setIsLoadingFilms(false);
+  //   }
+  //   if (errorFetchedFilms) {
+  //     setError({ error: new Error(JSON.stringify(errorFetchedFilms)) });
+  //     setErrorFetchedFilms(JSON.stringify(errorFetchedFilms));
+  //   }
+  // }, [filters]);
   const {
     isLoading: isLoadingGenres,
     data: fetchedGenres,
     error: errorFetchedGenres,
   } = useGetGenresQuery();
 
-  // const {
-  //   isLoading: isLoadingFilms,
-  //   error: errorFetchedFilms,
-  //   data: fetchedFilmsData,
-  // } = useGetFilmsQuery(filters);
+  const {
+    isLoading: isLoadingFilms,
+    error: errorFetchedFilms,
+    data: fetchedFilmsData,
+  } = useGetFilmsQuery(filters);
 
   const {
     isLoading: isLoadingUser,
