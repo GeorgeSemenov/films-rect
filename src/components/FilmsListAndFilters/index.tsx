@@ -49,6 +49,7 @@ export default function FilmsListAndFilters() {
     isLoading: isLoadingUser,
     error: errorFetchedUser,
     data: fetchedUser,
+    isError: isFetchedUserError,
   } = useGetUserQuery();
 
   //локальная инициализация фильтров, фильмов и избранных фильмов
@@ -81,7 +82,7 @@ export default function FilmsListAndFilters() {
       ) : fetchedUser ? (
         <FilmsList user={fetchedUser} />
       ) : (
-        <p>Не удалось подгрузить данные о пользователе</p>
+        isFetchedUserError && <p>Не удалось подгрузить данные с сервера</p>
       )}
     </div>
   );

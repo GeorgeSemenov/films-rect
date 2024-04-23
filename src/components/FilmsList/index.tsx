@@ -8,19 +8,20 @@ import useFavoriteFilms from "../../hooks/useFavoriteFilms";
 import fetchAllFavoriteFilms from "../../API/fetchFavoriteFilms";
 import useActions from "../../hooks/useActions";
 import FilmCard from "../FilmCard";
+import { CircularProgress } from "@mui/material";
 
 export default function FilmsList({ user }: { user: IUser }) {
   const favoriteFilms = useFavoriteFilms();
-  const [favButtonClicketTimes, setFavButtonClicketTimes] = useState<number>(0);
-  const { setFavoriteFilms, addFavoriteFilm, removeFavoriteFilm, setError } =
-    useActions();
+  const [isFavoriteFilmsLoading, setIsFavoriteFilmsLoading] = useState(true);
+  const { setFavoriteFilms, toggleFavoriteFilm, setError } = useActions();
 
   useEffect(() => {
     fetchAllFavoriteFilms(user).then((result) => {
       if (result.favoriteFilms) setFavoriteFilms(result.favoriteFilms);
       if (result.error) setError({ error: result.error });
+      setIsFavoriteFilmsLoading(false);
     });
-  }, [favButtonClicketTimes]);
+  }, []);
   const { films } = useFilmsData();
   const filters = useFilters();
 
@@ -43,43 +44,42 @@ export default function FilmsList({ user }: { user: IUser }) {
   });
   return (
     <>
-      <ul style={{ display: "flex", flexWrap: "wrap" }}>
-        {filteredFilmsList.length === 0 ? (
-          <p>
-            Установленным фильтрам не соответсвествует ни один фильм на этой
-            странице
-          </p>
-        ) : (
-          filteredFilmsList.map((film: IFilm) => {
-            return (
-              <li
-                key={film.id}
-                style={{
-                  flexShrink: "0",
-                  width: "296px",
-                  marginBottom: "15px",
-                  marginRight: "15px",
-                }}
-              >
-                <FilmCard
-                  film={film}
-                  isFavorite={favoriteFilms.some(
-                    (favFilm) => favFilm.id === film.id
-                  )}
-                  onFavButtonClick={(isFavorite: boolean) => {
-                    if (isFavorite) {
-                      removeFavoriteFilm(film);
-                    } else {
-                      addFavoriteFilm(film);
-                    }
-                    // setFavButtonClicketTimes(() => favButtonClicketTimes + 1);
+      {isFavoriteFilmsLoading ? (
+        <CircularProgress />
+      ) : (
+        <ul style={{ display: "flex", flexWrap: "wrap" }}>
+          {filteredFilmsList.length === 0 ? (
+            <p>
+              Установленным фильтрам не соответсвествует ни один фильм на этой
+              странице
+            </p>
+          ) : (
+            filteredFilmsList.map((film: IFilm) => {
+              return (
+                <li
+                  key={film.id}
+                  style={{
+                    flexShrink: "0",
+                    width: "296px",
+                    marginBottom: "15px",
+                    marginRight: "15px",
                   }}
-                />
-              </li>
-            );
-          })
-        )}
-      </ul>
+                >
+                  <FilmCard
+                    film={film}
+                    isFavorite={favoriteFilms.some(
+                      (favFilm) => favFilm.id === film.id
+                    )}
+                    onFavButtonClick={() => {
+                      toggleFavoriteFilm(film);
+                    }}
+                  />
+                </li>
+              );
+            })
+          )}
+        </ul>
+      )}
     </>
   );
 }

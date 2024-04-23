@@ -28,7 +28,7 @@ export default function FilmCard({
   const fullImageRef = imgServerPrefix + backdrop_path;
   const { setError } = useActions();
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345, height: "100%" }}>
       <Link to={href}>
         <CardActionArea>
           <CardMedia

@@ -8,19 +8,32 @@ export const favoriteFilmsSlice = createSlice({
   initialState,
   reducers: {
     setFavoriteFilms(
-      state,
+      favFilms,
       { payload: favoriteFilms }: { payload: IFavoriteFilm[] }
     ) {
       return favoriteFilms;
     },
-    addFavoriteFilm(state, { payload: addedFilm }: { payload: IFavoriteFilm }) {
-      state.push(addedFilm);
+    addFavoriteFilm(
+      favFilms,
+      { payload: addedFilm }: { payload: IFavoriteFilm }
+    ) {
+      favFilms.push(addedFilm);
     },
     removeFavoriteFilm(
-      state,
+      favFilms,
       { payload: removedFavoriteFilm }: { payload: IFavoriteFilm }
     ) {
-      return [...state.filter((ff) => ff.id !== removedFavoriteFilm.id)];
+      return [...favFilms.filter((ff) => ff.id !== removedFavoriteFilm.id)];
+    },
+    toggleFavoriteFilm(
+      favFilms,
+      { payload: favFilm }: { payload: IFavoriteFilm }
+    ) {
+      if (favFilms.some((films) => films.id === favFilm.id)) {
+        return [...favFilms.filter((ff) => ff.id !== favFilm.id)];
+      } else {
+        return [...favFilms, favFilm];
+      }
     },
   },
 });
