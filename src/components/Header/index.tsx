@@ -6,14 +6,14 @@ import { IconButton } from "@mui/material";
 import { useCookies } from "react-cookie";
 import { cookiesNames } from "../../constants";
 import ChangeEmailDialogWindow from "../ChangeEmailDialogWindow";
-import { useDisplayedErrorDispatchContext } from "../../context/ErrorContext";
+import useActions from "../../hooks/useActions";
 
 export default function Header() {
+  const { setError } = useActions();
   const iconButtonRef = useRef<HTMLButtonElement>(null);
   const [cookies] = useCookies([cookiesNames.isAuthorized]);
   const [isNeedToShowChangeLoginWindow, setIsNeedToShowChangeLoginWindow] =
     useState(false);
-  const displayedErrorDispatch = useDisplayedErrorDispatchContext();
   return (
     <>
       <header className="films-app-header">
@@ -27,12 +27,10 @@ export default function Header() {
               iconButtonRef.current.blur();
             }
             setIsNeedToShowChangeLoginWindow(true);
-            if (displayedErrorDispatch) {
-              if (!cookies[cookiesNames.isAuthorized]) {
-                displayedErrorDispatch({
-                  error: new Error("You are not authorized yet"),
-                });
-              }
+            if (!cookies[cookiesNames.isAuthorized]) {
+              setError({
+                error: new Error("You are not authorized yet"),
+              });
             }
           }}
           onKeyDown={(e) => {

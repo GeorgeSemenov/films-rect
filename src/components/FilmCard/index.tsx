@@ -4,8 +4,14 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { cookiesNames, imgServerPrefix } from "../../constants";
-import { Button, CardActionArea, CardActions, IconButton } from "@mui/material";
+import { cookiesNames, filmLinkPrefix, imgServerPrefix } from "../../constants";
+import {
+  Box,
+  Button,
+  CardActionArea,
+  CardActions,
+  IconButton,
+} from "@mui/material";
 import { StarBorder, Star } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { postFavoriteFilm } from "../../API/postFavoriteFilmsList";
@@ -29,7 +35,7 @@ export default function FilmCard({
   const { setError } = useActions();
   return (
     <Card sx={{ maxWidth: 345, height: "100%" }}>
-      <Link to={href}>
+      <Link to={`${filmLinkPrefix}/${id}`}>
         <CardActionArea>
           <CardMedia
             component="img"
@@ -50,29 +56,35 @@ export default function FilmCard({
             Рейтинг {vote_average}
           </Typography>
         </div>
-        <IconButton
-          onClick={() => {
-            onFavButtonClick(!isFavorite);
-            let isFavoriteBeforeClick: boolean;
-            if (!isPending) {
-              setIsPending(true);
-              isFavoriteBeforeClick = isFavorite;
+        <Box>
+          <IconButton
+            onClick={() => {
+              onFavButtonClick(!isFavorite);
+              let isFavoriteBeforeClick: boolean;
+              if (!isPending) {
+                setIsPending(true);
+                isFavoriteBeforeClick = isFavorite;
 
-              postFavoriteFilm(cookie[cookiesNames.accountId], id, !isFavorite)
-                .catch((err) => {
-                  setError({
-                    error: err,
-                    displayDuration: "10s",
-                  });
+                postFavoriteFilm(
+                  cookie[cookiesNames.accountId],
+                  id,
+                  !isFavorite
+                )
+                  .catch((err) => {
+                    setError({
+                      error: err,
+                      displayDuration: "10s",
+                    });
 
-                  onFavButtonClick(isFavoriteBeforeClick);
-                })
-                .finally(() => setIsPending(false));
-            }
-          }}
-        >
-          {isFavorite ? <Star /> : <StarBorder />}
-        </IconButton>
+                    onFavButtonClick(isFavoriteBeforeClick);
+                  })
+                  .finally(() => setIsPending(false));
+              }
+            }}
+          >
+            {isFavorite ? <Star /> : <StarBorder />}
+          </IconButton>
+        </Box>
       </CardContent>
       <CardActions>
         <Button size="small" color="primary">

@@ -1,5 +1,5 @@
 //полное API можно найти тут : https://developer.themoviedb.org/reference/search-movie
-export const selectValues = {};
+export const filmLinkPrefix = "film";
 
 //Перенёс в api/films/types
 export interface IFilm {
