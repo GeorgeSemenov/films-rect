@@ -7,7 +7,7 @@ import {
 import { IFilters, sortingValuesType } from "../../slices/filters/types";
 import { api } from "../api";
 import { IUser } from "../user/types";
-import { IFetchedFilmsResponse } from "./types";
+import { IFetchedFilmResponse, IFetchedFilmsResponse } from "./types";
 
 const filmsApi = api.injectEndpoints({
   endpoints: (build) => ({
@@ -29,6 +29,14 @@ const filmsApi = api.injectEndpoints({
         }
       },
     }),
+
+    // getFilm: build.query<IFetchedFilmResponse,void>({
+    //   providesTags:['film'],
+    //   queryFn: async ()=>{
+    //     const kek = await fetch(`loh/pidr`)
+    //     return kek;
+    //   },
+    // }),
     getFavoriteFilms: build.query<
       IFetchedFilmsResponse,
       { user: IUser; page: number }

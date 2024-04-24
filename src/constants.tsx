@@ -36,6 +36,8 @@ export interface ICookieSetOptions {
   sameSite?: boolean | "none" | "lax" | "strict";
 }
 
+export const URL_BASE = "https://api.kinopoisk.dev/v1.4";
+
 export const urlBase = "https://api.themoviedb.org";
 export const genresRelativeUrl = "/3/genre/movie/list?language=ru";
 export const filmsPopularRelativeUrl = "/3/movie/popular?language=ru";
@@ -84,6 +86,7 @@ export const films = [
   },
 ];
 
+export const KINOPOISK_TOKEN = "3SVTEEX-Y8HMTYJ-J3ENEFG-WC1N623";
 export const TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMTQ1NzY5MzEwNWQyZjVjYzJhZDZjZGQyYmVkNTM1ZCIsInN1YiI6IjY0YTI4NmFkZDQwMGYzMDBlYmZlOWNhNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.BxFsDdf-OSp32s3Luex-TVZq_yG_CaBjr2SrWBirjyk";
 

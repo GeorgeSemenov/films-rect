@@ -20,3 +20,8 @@ export interface IFetchedFilmsResponse {
   results: IFilm[];
   total_pages: number;
 }
+
+export interface IFetchedFilmResponse {
+  puk: string;
+  kek: number;
+}
