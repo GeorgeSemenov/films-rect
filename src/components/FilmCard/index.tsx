@@ -4,44 +4,43 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { IFilm, cookiesNames, imgServerPrefix } from "../../constants";
-import { Button, CardActionArea, CardActions, IconButton } from "@mui/material";
+import { cookiesNames, filmLinkPrefix, imgServerPrefix } from "../../constants";
+import {
+  Box,
+  Button,
+  CardActionArea,
+  CardActions,
+  IconButton,
+} from "@mui/material";
 import { StarBorder, Star } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import { postFavoriteFilm } from "../../API/postFavoriteFilmsList";
 import { useCookies } from "react-cookie";
-import { useDisplayedErrorDispatchContext } from "../../context/ErrorContext";
+import useActions from "../../hooks/useActions";
+import { IFilm } from "../../API/films/types";
 
 export default function FilmCard({
   film,
-  updateFilms,
+  isFavorite,
+  onFavButtonClick,
 }: {
   film: IFilm;
-  updateFilms: (func: (films: IFilm[]) => IFilm[]) => void;
+  isFavorite: boolean;
+  onFavButtonClick: (isFav: boolean) => void;
 }) {
-  const dispatchError = useDisplayedErrorDispatchContext();
   const [cookie] = useCookies([cookiesNames.accountId]);
   const [isPending, setIsPending] = useState(false);
-  const { isFavorite, href, backdrop_path, title, id, vote_average } = film;
+  const { href, backdrop_path, title, id, vote_average } = film;
   const fullImageRef = imgServerPrefix + backdrop_path;
-  function updateFavorites(isThisFilmFavorite: boolean) {
-    updateFilms((films) => {
-      const film = films.find((flm: IFilm) => flm["id"] === id);
-      if (film) {
-        film.isFavorite = isThisFilmFavorite;
-      }
-      return films;
-    });
-  }
+  const { setError } = useActions();
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <Link to={href}>
+    <Card sx={{ maxWidth: 345, height: "100%" }}>
+      <Link to={`${filmLinkPrefix}/${id}`}>
         <CardActionArea>
           <CardMedia
             component="img"
             height="140"
             image={fullImageRef}
-            alt={title}
+            alt={`Картинка фильма ${title} не подгрузилась, извините. Возможно проблема с VPN.`}
           />
         </CardActionArea>
       </Link>
@@ -56,31 +55,15 @@ export default function FilmCard({
             Рейтинг {vote_average}
           </Typography>
         </div>
-        <IconButton
-          onClick={() => {
-            updateFavorites(!isFavorite);
-
-            let isFavoriteBeforeClick: boolean;
-            if (!isPending) {
-              setIsPending(true);
-              isFavoriteBeforeClick = isFavorite;
-
-              postFavoriteFilm(cookie[cookiesNames.accountId], id, !isFavorite)
-                .catch((err) => {
-                  if (dispatchError) {
-                    dispatchError({
-                      error: err,
-                      displayDuration: "10s",
-                    });
-                  }
-                  updateFavorites(isFavoriteBeforeClick);
-                })
-                .finally(() => setIsPending(false));
-            }
-          }}
-        >
-          {isFavorite ? <Star /> : <StarBorder />}
-        </IconButton>
+        <Box>
+          <IconButton
+            onClick={() => {
+              onFavButtonClick(!isFavorite);
+            }}
+          >
+            {isFavorite ? <Star /> : <StarBorder />}
+          </IconButton>
+        </Box>
       </CardContent>
       <CardActions>
         <Button size="small" color="primary">

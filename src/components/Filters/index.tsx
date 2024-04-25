@@ -2,18 +2,17 @@ import React from "react";
 import "./styles.scss";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
-import {
-  filtersInitialValues,
-  useFilters,
-  useFiltersDispatch,
-  filtersReducerTypes,
-} from "../../context/filtersContext";
 import SelectComponent from "../SelectComponent";
 import Filters__genres from "../Filters__genres";
 import Filters__years from "../Filters__years";
 import { SelectChangeEvent } from "@mui/material/Select";
 import Filters__pagination from "../Filters__pagination";
 import SearchBar from "../SearchBar";
+import useActions from "../../hooks/useActions";
+import { filtersInitialValues } from "../../slices/filters/values";
+import { sortingValuesType } from "../../slices/filters/types";
+import useFilters from "../../hooks/useFilters";
+import useFilms from "../../hooks/useFilmsData";
 
 export default function Filters({
   className = "",
@@ -22,56 +21,46 @@ export default function Filters({
   className?: string;
   wrapperClassName?: string;
 }) {
-  const filters = useFilters() ?? filtersInitialValues;
-  const filtersDispatch =
-    useFiltersDispatch() ??
-    (() => {
-      console.error("error in component Filters, its out of filterscontext");
-    });
-  function resetFilters() {
-    filtersDispatch({ type: filtersReducerTypes.resetFilters });
+  const firstPaginationPage = 1;
+  const { resetFilters, setSearchQuery, setPaginationPage, setSorting } =
+    useActions();
+  const filters = useFilters();
+  const { totalPages } = useFilms();
+  function onReset() {
+    resetFilters();
   }
   return (
     <aside className={wrapperClassName}>
       <form className={"filters " + className}>
         <div className="filters__title-container">
           <p>Фильтры</p>
-          <IconButton onClick={resetFilters}>
+          <IconButton onClick={onReset}>
             <CloseIcon />
           </IconButton>
         </div>
         <SearchBar
           className="filters__search-bar"
           onSearch={(searchQuery) => {
-            filtersDispatch({
-              type: filtersReducerTypes.changePaginationPage,
-              paginationPage: 1,
-            });
-            filtersDispatch({
-              type: filtersReducerTypes.setSearchQuery,
-              searchQuery: searchQuery,
-            });
+            setSearchQuery(searchQuery ? searchQuery : "");
+            setPaginationPage(firstPaginationPage);
           }}
         />
         <SelectComponent
           label="Сортировать по"
-          selectOptions={filtersInitialValues.filtersSortingTypes}
+          selectOptions={filtersInitialValues.sortingTypes}
           className="filters__select"
           handleChange={(e: SelectChangeEvent) => {
-            filtersDispatch({
-              type: filtersReducerTypes.changeSorting,
-              checkedSortingType: e.target.value,
-            });
-            filtersDispatch({
-              type: filtersReducerTypes.changePaginationPage,
-              paginationPage: 1,
-            });
+            setSorting(e.target.value as sortingValuesType);
+            setPaginationPage(firstPaginationPage);
           }}
           value={filters.checkedSortingType}
         />
         <Filters__years className="filters__years" />
         <Filters__genres className="filters__select" />
-        <Filters__pagination />
+        <Filters__pagination
+          paginationPage={filters.paginationPage}
+          paginationTotalPages={totalPages}
+        />
       </form>
     </aside>
   );

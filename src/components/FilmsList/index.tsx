@@ -1,55 +1,35 @@
-import React, { useEffect, useState } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
-import FilmCard from "../FilmCard";
-import { IFilm, cookiesNames } from "../../constants";
-import {
-  filtersInitialValues,
-  useFilters,
-  useFiltersDispatch,
-} from "../../context/filtersContext";
+import React from "react";
 import getFilmYear from "../../utils/getFilmYear";
-import FetchErrorWindow from "../FetchErrorWindow";
-import filmsListUseEffectFunction from "./filmsListUseEffectFunction";
-import { useCookies } from "react-cookie";
-import { useDisplayedErrorDispatchContext } from "../../context/ErrorContext";
+import useFilmsData from "../../hooks/useFilmsData";
+import { IFilm } from "../../API/films/types";
+import { IUser } from "../../API/user/types";
+import useFilters from "../../hooks/useFilters";
+import useActions from "../../hooks/useActions";
+import FilmCard from "../FilmCard";
+import { CircularProgress } from "@mui/material";
+import {
+  useGetAllFavoriteFilmsQuery,
+  usePostFavoriteFilmsMutation,
+} from "../../API/films";
 
-export default function FilmsList() {
-  const displayedErrorDispatch = useDisplayedErrorDispatchContext();
-  const [films, setFilms] = useState<IFilm[]>([]);
-  const [isFetchFilmsFailed, setIsFetchFilmsFailed] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const filters = useFilters() ?? filtersInitialValues;
-  const [currentFiltersState, setCurrentFiltersState] = useState({
-    curPage: filters.paginationPage,
-    curSortingType: filters.checkedSortingType,
-  }); // Это состояние которое запомнил компонент FilmsList
-  const func = () => {
-    console.warn(`filtersDispatch out of context`);
-  };
-  const filtersDispatch = useFiltersDispatch() ?? func;
-  const [, setCookie] = useCookies([cookiesNames.accountId]);
-  if (
-    currentFiltersState.curPage !== filters.paginationPage ||
-    currentFiltersState.curSortingType !== filters.checkedSortingType
-  ) {
-    //Если один из параметров состояния фильтров, которое запомнил компонент FilmsList - изменится, значит будут подгружаться новые фильмы и нужно выставить флаг, что загрузка началась
-    setIsLoading(true);
-    setCurrentFiltersState({
-      curPage: filters.paginationPage,
-      curSortingType: filters.checkedSortingType,
-    });
-  }
-  useEffect(() => {
-    filmsListUseEffectFunction({
-      setIsFetchFilmsFailed,
-      filters,
-      setFilms,
-      setIsLoading,
-      filtersDispatch,
-      setCookie,
-      displayedErrorDispatch,
-    });
-  }, [filters.checkedSortingType, filters.paginationPage, filters.searchQuery]);
+export default function FilmsList({ user }: { user: IUser }) {
+  const {
+    data: favoriteFilms,
+    isLoading: isFavoriteFilmsLoading,
+    isError: isErrorFetchingFaforiteFilms,
+  } = useGetAllFavoriteFilmsQuery(user);
+  const [postFavoriteFilm] = usePostFavoriteFilmsMutation();
+  const { setFavoriteFilms, setError } = useActions();
+  const { films } = useFilmsData();
+  const filters = useFilters();
+
+  if (isFavoriteFilmsLoading) return <CircularProgress />;
+  if (isErrorFetchingFaforiteFilms)
+    setError({ error: new Error("Ошибка при подгрузке избранных фильмов") });
+  if (!favoriteFilms)
+    return <p>Не удалось подгрузить избрынные фильмы с сервера</p>;
+  setFavoriteFilms(favoriteFilms);
+
   const filteredFilmsList = films.filter((film: IFilm) => {
     let isGenresSuitable = !filters.checkedGenres.length;
     let isYearsSuitable = false;
@@ -67,42 +47,40 @@ export default function FilmsList() {
       getFilmYear(film) <= filters.years[1];
     return isGenresSuitable && isYearsSuitable;
   });
-  function updateFilms(func: (films: IFilm[]) => IFilm[]): void {
-    const newFilms = func(films);
-    setFilms([...newFilms]);
-  }
   return (
     <>
-      {isFetchFilmsFailed ? (
-        <FetchErrorWindow />
-      ) : (
-        <ul style={{ display: "flex", flexWrap: "wrap" }}>
-          {isLoading ? (
-            <CircularProgress style={{ width: 150, height: 150 }} />
-          ) : filteredFilmsList.length === 0 ? (
-            <p>
-              Установленным фильтрам не соответсвтует ни один фильм на этой
-              странице
-            </p>
-          ) : (
-            filteredFilmsList.map((film: IFilm) => {
-              return (
-                <li
-                  key={film.id}
-                  style={{
-                    flexShrink: "0",
-                    width: "296px",
-                    marginBottom: "15px",
-                    marginRight: "15px",
+      <ul style={{ display: "flex", flexWrap: "wrap" }}>
+        {filteredFilmsList.length === 0 ? (
+          <p>
+            Установленным фильтрам не соответсвествует ни один фильм на этой
+            странице
+          </p>
+        ) : (
+          filteredFilmsList.map((film: IFilm) => {
+            return (
+              <li
+                key={film.id}
+                style={{
+                  flexShrink: "0",
+                  width: "296px",
+                  marginBottom: "15px",
+                  marginRight: "15px",
+                }}
+              >
+                <FilmCard
+                  film={film}
+                  isFavorite={favoriteFilms.some(
+                    (favFilm) => favFilm.id === film.id
+                  )}
+                  onFavButtonClick={(isFavorite) => {
+                    postFavoriteFilm({ filmId: film.id, isFavorite, user });
                   }}
-                >
-                  <FilmCard film={film} updateFilms={updateFilms} />
-                </li>
-              );
-            })
-          )}
-        </ul>
-      )}
+                />
+              </li>
+            );
+          })
+        )}
+      </ul>
     </>
   );
 }

@@ -1,22 +1,22 @@
 import React from "react";
 import "./styles.scss";
 import Header from "../Header";
-import FiltersProvider from "../../context/filtersContext";
 import { Outlet } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { cookiesNames } from "../../constants";
 import LoginWindow from "../LoginWindow";
-import { IDisplayedError, useDisplayedError } from "../../context/ErrorContext";
+import useDisplayedError from "../../hooks/useDisplayedError";
 import PopupWindow from "../PopupWindow";
 
 export default function FilmsApp() {
-  const displayedError: IDisplayedError | null = useDisplayedError();
+  const displayedError = useDisplayedError();
   const [cookies] = useCookies([cookiesNames.isAuthorized]);
+
   return (
-    <FiltersProvider>
+    <>
       <Header />
       {cookies.isAuthorized ? <Outlet /> : <LoginWindow />}
-      {displayedError?.error && (
+      {displayedError.error && (
         <PopupWindow
           message={
             displayedError
@@ -30,6 +30,6 @@ export default function FilmsApp() {
           animationDelay={displayedError ? displayedError.displayDelay : "0s"}
         />
       )}
-    </FiltersProvider>
+    </>
   );
 }

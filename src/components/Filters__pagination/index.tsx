@@ -1,24 +1,20 @@
 import { Pagination } from "@mui/material";
-import React, { useState } from "react";
-import {
-  filtersReducerTypes,
-  useFilters,
-  useFiltersDispatch,
-} from "../../context/filtersContext";
+import React from "react";
+import useFilters from "../../hooks/useFilters";
+import useActions from "../../hooks/useActions";
 
-export default function Filters__pagination({ className }: IProps) {
-  const { paginationPage, paginationTotalPages } = useFilters() ?? {
-    paginationTotalPages: 5,
-    paginationPage: 1,
-  };
-  const filtersDispatch = useFiltersDispatch();
-  const [page, setPage] = useState(1);
+export default function Filters__pagination({
+  className,
+  paginationPage,
+  paginationTotalPages,
+}: {
+  className?: string;
+  paginationPage: number;
+  paginationTotalPages: number;
+}) {
+  const { setPaginationPage } = useActions();
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    if (filtersDispatch)
-      filtersDispatch({
-        type: filtersReducerTypes.changePaginationPage,
-        paginationPage: value,
-      });
+    setPaginationPage(value);
   };
   return (
     <Pagination
@@ -31,8 +27,4 @@ export default function Filters__pagination({ className }: IProps) {
       onChange={handleChange}
     />
   );
-}
-
-interface IProps {
-  className?: string;
 }
