@@ -74,7 +74,6 @@ export default function FilmsList({ user }: { user: IUser }) {
                   )}
                   onFavButtonClick={(isFavorite) => {
                     postFavoriteFilm({ filmId: film.id, isFavorite, user });
-                    // toggleFavoriteFilm(film);
                   }}
                 />
               </li>

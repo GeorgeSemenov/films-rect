@@ -15,11 +15,9 @@ import useFilters from "../../hooks/useFilters";
 import useFilms from "../../hooks/useFilmsData";
 
 export default function Filters({
-  initiateFiltersByFetchedData,
   className = "",
   wrapperClassName,
 }: {
-  initiateFiltersByFetchedData: () => void;
   className?: string;
   wrapperClassName?: string;
 }) {
@@ -30,7 +28,6 @@ export default function Filters({
   const { totalPages } = useFilms();
   function onReset() {
     resetFilters();
-    initiateFiltersByFetchedData();
   }
   return (
     <aside className={wrapperClassName}>

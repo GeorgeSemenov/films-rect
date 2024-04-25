@@ -1,12 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { filtersInitialValues } from "./values";
-import { filtersYearsType, sortingValuesType } from "./types";
+import { IFilters, filtersYearsType, sortingValuesType } from "./types";
 import { IGenre } from "../../API/genres/types";
 
 export const filters = createSlice({
   name: "filters",
   initialState: filtersInitialValues,
   reducers: {
+    resetFilters: (state: IFilters) => {
+      state.checkedGenres = filtersInitialValues.checkedGenres;
+      state.checkedSortingType = filtersInitialValues.checkedSortingType;
+      state.paginationPage = filtersInitialValues.paginationPage;
+      state.searchQuery = filtersInitialValues.searchQuery;
+      state.years = filtersInitialValues.years;
+    },
     setSorting: (
       state,
       { payload: sortingType }: { payload: sortingValuesType }
@@ -33,9 +40,6 @@ export const filters = createSlice({
     },
     setSearchQuery: (state, { payload: query }: { payload: string }) => {
       state.searchQuery = query;
-    },
-    resetFilters: (state) => {
-      return filtersInitialValues;
     },
   },
 });

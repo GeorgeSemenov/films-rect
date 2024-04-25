@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import { StarBorder, Star } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import { postFavoriteFilm } from "../../API/postFavoriteFilmsList";
 import { useCookies } from "react-cookie";
 import useActions from "../../hooks/useActions";
 import { IFilm } from "../../API/films/types";
@@ -60,26 +59,6 @@ export default function FilmCard({
           <IconButton
             onClick={() => {
               onFavButtonClick(!isFavorite);
-              let isFavoriteBeforeClick: boolean;
-              if (!isPending) {
-                setIsPending(true);
-                isFavoriteBeforeClick = isFavorite;
-
-                postFavoriteFilm(
-                  cookie[cookiesNames.accountId],
-                  id,
-                  !isFavorite
-                )
-                  .catch((err) => {
-                    setError({
-                      error: err,
-                      displayDuration: "10s",
-                    });
-
-                    onFavButtonClick(isFavoriteBeforeClick);
-                  })
-                  .finally(() => setIsPending(false));
-              }
             }}
           >
             {isFavorite ? <Star /> : <StarBorder />}

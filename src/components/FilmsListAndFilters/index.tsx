@@ -31,12 +31,12 @@ export default function FilmsListAndFilters() {
     isError: isFetchedUserError,
   } = useGetUserQuery();
 
+  if (fetchedGenres) setGenres(fetchedGenres);
   //локальная инициализация фильтров, фильмов и избранных фильмов
   if (!isLoadingGenres && !isLoadingFilms && !isLoadingUser) {
     if (errorFetchedGenres || errorFetchedFilms || errorFetchedUser) {
       setError({ error: new Error("Невозможно подгрузить данные ") });
     } else {
-      initiateFiltersByFetchedData();
       const filmsData: FilmsDataType = {
         films: fetchedFilmsData?.results ? fetchedFilmsData?.results : [],
         totalPages: fetchedFilmsData?.total_pages
@@ -50,12 +50,9 @@ export default function FilmsListAndFilters() {
     }
   }
 
-  function initiateFiltersByFetchedData() {
-    if (fetchedGenres) setGenres(fetchedGenres);
-  }
   return (
     <div style={{ display: "flex" }}>
-      <Filters initiateFiltersByFetchedData={initiateFiltersByFetchedData} />
+      <Filters />
       {isLoadingUser && isLoadingFilms ? (
         <CircularProgress style={{ width: 150, height: 150 }} />
       ) : fetchedUser ? (
