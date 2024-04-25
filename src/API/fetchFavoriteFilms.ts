@@ -17,19 +17,15 @@ export default async function fetchAllFavoriteFilms(
   let pageOfFavoriteFilms = 1;
   let favoriteFilmsResponse;
   let allFavoriteFilms: IFavoriteFilm[] = [];
-  try {
-    do {
-      favoriteFilmsResponse = await fetchFavoriteFilmsResponse(
-        user.id,
-        pageOfFavoriteFilms
-      );
-      pageOfFavoriteFilms++;
-      allFavoriteFilms = allFavoriteFilms.concat(
-        favoriteFilmsResponse.results as IFavoriteFilm[]
-      );
-    } while (pageOfFavoriteFilms <= favoriteFilmsResponse.total_pages);
-  } catch (e) {
-    return { error: new Error("There is error occured, while") };
-  }
+  do {
+    favoriteFilmsResponse = await fetchFavoriteFilmsResponse(
+      user.id,
+      pageOfFavoriteFilms
+    );
+    pageOfFavoriteFilms++;
+    allFavoriteFilms = allFavoriteFilms.concat(
+      favoriteFilmsResponse.results as IFavoriteFilm[]
+    );
+  } while (pageOfFavoriteFilms <= favoriteFilmsResponse.total_pages);
   return { favoriteFilms: allFavoriteFilms };
 }

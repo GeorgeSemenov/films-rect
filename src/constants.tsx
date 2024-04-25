@@ -1,31 +1,6 @@
 //полное API можно найти тут : https://developer.themoviedb.org/reference/search-movie
 export const filmLinkPrefix = "film";
 
-//Перенёс в api/films/types
-export interface IFilm {
-  adult?: boolean;
-  backdrop_path?: string;
-  genre_ids: number[];
-  id: number;
-  original_language?: string;
-  original_title?: string;
-  overview?: string;
-  popularity?: number;
-  poster_path?: string;
-  release_date: string;
-  title?: string;
-  video?: boolean;
-  vote_average?: number;
-  vote_count?: number;
-  isFavorite: boolean;
-  href: string;
-}
-
-//Перенёс в api/films/types
-export interface IFavoriteFilm {
-  id: number;
-}
-
 export interface ICookieSetOptions {
   path?: string;
   expires?: Date;
@@ -106,17 +81,3 @@ export const cookiesNames = {
   email: "email",
   accountId: "accountId",
 };
-
-//Взадчем это?
-export interface IFetchedFilmsDataWithPaginationData {
-  //Когда мы запрашиваем фильмы вместе со
-  //списком фильмов мы должны получить и колличество страниц в списке
-  films: IFilm[];
-  paginationTotalPages: number;
-}
-
-//Перенёс в api/films/index.ts (переименовал в IFetchedFilms)
-export interface IFetchFilmsResponse {
-  results: IFilm[];
-  total_pages: number;
-}

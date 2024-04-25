@@ -1,29 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import getFilmYear from "../../utils/getFilmYear";
 import useFilmsData from "../../hooks/useFilmsData";
 import { IFilm } from "../../API/films/types";
 import { IUser } from "../../API/user/types";
 import useFilters from "../../hooks/useFilters";
-import useFavoriteFilms from "../../hooks/useFavoriteFilms";
-import fetchAllFavoriteFilms from "../../API/fetchFavoriteFilms";
 import useActions from "../../hooks/useActions";
 import FilmCard from "../FilmCard";
 import { CircularProgress } from "@mui/material";
+import {
+  useGetAllFavoriteFilmsQuery,
+  usePostFavoriteFilmsMutation,
+} from "../../API/films";
 
 export default function FilmsList({ user }: { user: IUser }) {
-  const favoriteFilms = useFavoriteFilms();
-  const [isFavoriteFilmsLoading, setIsFavoriteFilmsLoading] = useState(true);
-  const { setFavoriteFilms, toggleFavoriteFilm, setError } = useActions();
-
-  useEffect(() => {
-    fetchAllFavoriteFilms(user).then((result) => {
-      if (result.favoriteFilms) setFavoriteFilms(result.favoriteFilms);
-      if (result.error) setError({ error: result.error });
-      setIsFavoriteFilmsLoading(false);
-    });
-  }, []);
+  const {
+    data: favoriteFilms,
+    isLoading: isFavoriteFilmsLoading,
+    isError: isErrorFetchingFaforiteFilms,
+  } = useGetAllFavoriteFilmsQuery(user);
+  const [postFavoriteFilm] = usePostFavoriteFilmsMutation();
+  const { setFavoriteFilms, setError } = useActions();
   const { films } = useFilmsData();
   const filters = useFilters();
+
+  if (isFavoriteFilmsLoading) return <CircularProgress />;
+  if (isErrorFetchingFaforiteFilms)
+    setError({ error: new Error("Ошибка при подгрузке избранных фильмов") });
+  if (!favoriteFilms)
+    return <p>Не удалось подгрузить избрынные фильмы с сервера</p>;
+  setFavoriteFilms(favoriteFilms);
 
   const filteredFilmsList = films.filter((film: IFilm) => {
     let isGenresSuitable = !filters.checkedGenres.length;
@@ -44,42 +49,39 @@ export default function FilmsList({ user }: { user: IUser }) {
   });
   return (
     <>
-      {isFavoriteFilmsLoading ? (
-        <CircularProgress />
-      ) : (
-        <ul style={{ display: "flex", flexWrap: "wrap" }}>
-          {filteredFilmsList.length === 0 ? (
-            <p>
-              Установленным фильтрам не соответсвествует ни один фильм на этой
-              странице
-            </p>
-          ) : (
-            filteredFilmsList.map((film: IFilm) => {
-              return (
-                <li
-                  key={film.id}
-                  style={{
-                    flexShrink: "0",
-                    width: "296px",
-                    marginBottom: "15px",
-                    marginRight: "15px",
+      <ul style={{ display: "flex", flexWrap: "wrap" }}>
+        {filteredFilmsList.length === 0 ? (
+          <p>
+            Установленным фильтрам не соответсвествует ни один фильм на этой
+            странице
+          </p>
+        ) : (
+          filteredFilmsList.map((film: IFilm) => {
+            return (
+              <li
+                key={film.id}
+                style={{
+                  flexShrink: "0",
+                  width: "296px",
+                  marginBottom: "15px",
+                  marginRight: "15px",
+                }}
+              >
+                <FilmCard
+                  film={film}
+                  isFavorite={favoriteFilms.some(
+                    (favFilm) => favFilm.id === film.id
+                  )}
+                  onFavButtonClick={(isFavorite) => {
+                    postFavoriteFilm({ filmId: film.id, isFavorite, user });
+                    // toggleFavoriteFilm(film);
                   }}
-                >
-                  <FilmCard
-                    film={film}
-                    isFavorite={favoriteFilms.some(
-                      (favFilm) => favFilm.id === film.id
-                    )}
-                    onFavButtonClick={() => {
-                      toggleFavoriteFilm(film);
-                    }}
-                  />
-                </li>
-              );
-            })
-          )}
-        </ul>
-      )}
+                />
+              </li>
+            );
+          })
+        )}
+      </ul>
     </>
   );
 }
