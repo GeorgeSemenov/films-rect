@@ -1,3 +1,5 @@
+import { Url } from "url";
+
 export interface IFilm {
   adult?: boolean;
   backdrop_path?: string;
@@ -22,6 +24,20 @@ export interface IFetchedFilmsResponse {
 }
 
 export interface IFetchedFilmResponse {
-  puk: string;
-  kek: number;
+  credits: ICredits;
+  details: IDetails;
+}
+
+interface IDetails {
+  title: string;
+  budget: number;
+  genres: { name: string }[];
+  popularity: number;
+  poster_path?: string | Url;
+}
+interface ICredits {
+  cast: ICast[];
+}
+interface ICast {
+  name: string;
 }
