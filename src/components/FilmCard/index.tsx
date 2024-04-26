@@ -20,18 +20,13 @@ import { IFilm } from "../../API/films/types";
 
 export default function FilmCard({
   film,
-  isFavorite,
   onFavButtonClick,
 }: {
   film: IFilm;
-  isFavorite: boolean;
   onFavButtonClick: (isFav: boolean) => void;
 }) {
-  const [cookie] = useCookies([cookiesNames.accountId]);
-  const [isPending, setIsPending] = useState(false);
   const { href, backdrop_path, title, id, vote_average } = film;
   const fullImageRef = imgServerPrefix + backdrop_path;
-  const { setError } = useActions();
   return (
     <Card sx={{ maxWidth: 345, height: "100%" }}>
       <Link to={`${filmLinkPrefix}/${id}`}>
@@ -55,15 +50,6 @@ export default function FilmCard({
             Рейтинг {vote_average}
           </Typography>
         </div>
-        <Box>
-          <IconButton
-            onClick={() => {
-              onFavButtonClick(!isFavorite);
-            }}
-          >
-            {isFavorite ? <Star /> : <StarBorder />}
-          </IconButton>
-        </Box>
       </CardContent>
       <CardActions>
         <Button size="small" color="primary">

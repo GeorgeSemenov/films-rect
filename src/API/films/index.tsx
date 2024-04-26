@@ -43,62 +43,7 @@ const filmsApi = api.injectEndpoints({
         }
       },
     }),
-    getFavoriteFilms: build.query<
-      IFetchedFilmsResponse,
-      { user: IUser; page: number }
-    >({
-      providesTags: ["favFilms"],
-      query: ({ user, page }) =>
-        `${urlBase}/3/account/${user.id}/favorite/movies?page=${page}`,
-    }),
-    getAllFavoriteFilms: build.query<IFavoriteFilm[] | undefined, IUser>({
-      providesTags: ["favFilms"],
-      queryFn: async (user) => {
-        const favFilms = await fetchAllFavoriteFilms(user);
-        return { data: favFilms.favoriteFilms };
-      },
-    }),
-    postFavoriteFilms: build.mutation<
-      void,
-      { filmId: number; isFavorite: boolean; user: IUser }
-    >({
-      invalidatesTags: ["favFilms"],
-      query: ({ filmId, isFavorite, user: { id } }) => ({
-        url: `${urlBase}/3/account/${id}/favorite`,
-        method: "POST",
-        body: {
-          media_type: "movie",
-          media_id: filmId,
-          favorite: isFavorite,
-        },
-      }),
-      onQueryStarted(
-        { filmId, isFavorite, user },
-        { dispatch, queryFulfilled }
-      ) {
-        const patchResult = dispatch(
-          filmsApi.util.updateQueryData(
-            "getAllFavoriteFilms",
-            user,
-            (draft) => {
-              if (isFavorite) {
-                draft?.push({ id: filmId });
-              } else {
-                return draft?.filter((ff) => ff.id !== filmId);
-              }
-            }
-          )
-        );
-        queryFulfilled.catch(patchResult.undo);
-      },
-    }),
   }),
 });
 
-export const {
-  usePostFavoriteFilmsMutation,
-  useGetAllFavoriteFilmsQuery,
-  useGetFilmQuery,
-  useGetFilmsQuery,
-  useGetFavoriteFilmsQuery,
-} = filmsApi;
+export const { useGetFilmQuery, useGetFilmsQuery } = filmsApi;

@@ -1,13 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query";
-import { KINOPOISK_TOKEN, URL_BASE } from "../constants";
+import { TOKEN, URL_BASE } from "../constants";
 
 export const kinopoiskApi = createApi({
-  reducerPath: "kinopoiskApi",
+  reducerPath: "kinopoiskApiDeleteMe",
   baseQuery: fetchBaseQuery({
     baseUrl: URL_BASE,
     prepareHeaders: (headers) => {
       headers.set(`accept`, `application/json`);
-      headers.set(`X-API-KEY:`, KINOPOISK_TOKEN);
+      headers.set(`X-API-KEY:`, TOKEN);
       return headers;
     },
   }),
