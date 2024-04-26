@@ -12,19 +12,12 @@ import {
   CardActions,
   IconButton,
 } from "@mui/material";
-import { StarBorder, Star } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import useActions from "../../hooks/useActions";
 import { IFilm } from "../../API/films/types";
 
-export default function FilmCard({
-  film,
-  onFavButtonClick,
-}: {
-  film: IFilm;
-  onFavButtonClick: (isFav: boolean) => void;
-}) {
+export default function FilmCard({ film }: { film: IFilm }) {
   const { href, backdrop_path, title, id, vote_average } = film;
   const fullImageRef = imgServerPrefix + backdrop_path;
   return (

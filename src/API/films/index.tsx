@@ -25,23 +25,12 @@ const filmsApi = api.injectEndpoints({
         return { data: { credits, details } };
       },
     }),
-    getFilms: build.query<IFetchedFilmsResponse, IFilters>({
+    getFilms: build.query<
+      IFetchedFilmsResponse,
+      { page?: number; limit?: number }
+    >({
       providesTags: ["films"],
-      query: (filters: IFilters) => {
-        const { paginationPage: page } = filters;
-        const pageQuery = page === 0 || !page ? "" : `&page=${page}`;
-
-        if (filters.searchQuery) {
-          return `${searchFilmsQueryUrl}${filters.searchQuery}${pageQuery}`;
-        }
-
-        const sortedByPopularity: sortingValuesType = "byPopularity";
-        if (filters?.checkedSortingType === sortedByPopularity) {
-          return filmsPopularRelativeUrl + pageQuery;
-        } else {
-          return filmsTopRatedRelativeUrl + pageQuery;
-        }
-      },
+      query: ({ page = 1, limit = 1 }) => `/movie?page=${page}&limit=${limit}`,
     }),
   }),
 });

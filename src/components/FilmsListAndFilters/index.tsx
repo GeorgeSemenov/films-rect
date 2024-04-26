@@ -18,12 +18,13 @@ export default function FilmsListAndFilters() {
     error: errorFetchedGenres,
   } = useGetGenresQuery();
 
-  const {
-    isLoading: isLoadingFilms,
-    error: errorFetchedFilms,
-    data: fetchedFilmsData,
-  } = useGetFilmsQuery(filters);
+  // const {
+  //   isLoading: isLoadingFilms,
+  //   error: errorFetchedFilms,
+  //   data: fetchedFilmsData,
+  // } = useGetFilmsQuery({});
 
+  // if (!isLoadingFilms) console.warn(fetchedFilmsData);
   const {
     isLoading: isLoadingUser,
     error: errorFetchedUser,
@@ -33,27 +34,27 @@ export default function FilmsListAndFilters() {
 
   if (fetchedGenres) setGenres(fetchedGenres);
   //локальная инициализация фильтров, фильмов и избранных фильмов
-  if (!isLoadingGenres && !isLoadingFilms && !isLoadingUser) {
-    if (errorFetchedGenres || errorFetchedFilms || errorFetchedUser) {
-      setError({ error: new Error("Невозможно подгрузить данные ") });
-    } else {
-      const filmsData: FilmsDataType = {
-        films: fetchedFilmsData?.results ? fetchedFilmsData?.results : [],
-        totalPages: fetchedFilmsData?.total_pages
-          ? fetchedFilmsData?.total_pages
-          : 1,
-      };
-      setFilmsData(filmsData);
-      if (fetchedUser) {
-        setUser(fetchedUser);
-      }
-    }
-  }
+  // if (!isLoadingGenres && !isLoadingFilms && !isLoadingUser) {
+  //   if (errorFetchedGenres || errorFetchedFilms || errorFetchedUser) {
+  //     setError({ error: new Error("Невозможно подгрузить данные ") });
+  //   } else {
+  //     const filmsData: FilmsDataType = {
+  //       films: fetchedFilmsData?.results ? fetchedFilmsData?.results : [],
+  //       totalPages: fetchedFilmsData?.total_pages
+  //         ? fetchedFilmsData?.total_pages
+  //         : 1,
+  //     };
+  //     setFilmsData(filmsData);
+  //     if (fetchedUser) {
+  //       setUser(fetchedUser);
+  //     }
+  //   }
+  // }
 
   return (
     <div style={{ display: "flex" }}>
       <Filters />
-      {isLoadingUser && isLoadingFilms ? (
+      {isLoadingUser ? (
         <CircularProgress style={{ width: 150, height: 150 }} />
       ) : fetchedUser ? (
         <FilmsList user={fetchedUser} />
