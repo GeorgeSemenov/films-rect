@@ -7,10 +7,16 @@ export const api = createApi({
     baseUrl: URL_BASE,
     prepareHeaders: (headers) => {
       headers.set(`accept`, `application/json`);
-      headers.set(`X-API-KEY:`, TOKEN);
+      headers.set(`X-API-KEY`, TOKEN);
       return headers;
     },
   }),
   tagTypes: ["genres", "film", "films"],
   endpoints: () => ({}),
 });
+
+/*Что будем подгружать
+/movie/{id}
+/movie/search
+/movie/possible-values-by-field (жонры)
+*/

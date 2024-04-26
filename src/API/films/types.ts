@@ -1,26 +1,19 @@
 import { Url } from "url";
+import { IGenre } from "../genres/types";
 
 export interface IFilm {
-  adult?: boolean;
-  backdrop_path?: string;
-  genre_ids: number[];
   id: number;
-  original_language?: string;
-  original_title?: string;
-  overview?: string;
-  popularity?: number;
-  poster_path?: string;
-  release_date: string;
-  title?: string;
-  video?: boolean;
-  vote_average?: number;
-  vote_count?: number;
-  href: string;
+  description: string;
+  genres: IGenre[];
+  name: string;
+  poster: { previewUrl: string; url: string };
+  rating: { kp: number };
+  year: number;
 }
 
 export interface IFetchedFilmsResponse {
-  results: IFilm[];
-  total_pages: number;
+  docs: IFilm[];
+  pages: number;
 }
 
 export interface IFetchedFilmResponse {

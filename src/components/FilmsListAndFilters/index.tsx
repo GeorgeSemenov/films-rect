@@ -18,13 +18,13 @@ export default function FilmsListAndFilters() {
     error: errorFetchedGenres,
   } = useGetGenresQuery();
 
-  // const {
-  //   isLoading: isLoadingFilms,
-  //   error: errorFetchedFilms,
-  //   data: fetchedFilmsData,
-  // } = useGetFilmsQuery({});
+  const {
+    isLoading: isLoadingFilms,
+    error: errorFetchedFilms,
+    data: fetchedFilmsData,
+  } = useGetFilmsQuery({});
 
-  // if (!isLoadingFilms) console.warn(fetchedFilmsData);
+  if (!isLoadingFilms) console.warn(fetchedFilmsData);
   const {
     isLoading: isLoadingUser,
     error: errorFetchedUser,

@@ -30,7 +30,7 @@ const filmsApi = api.injectEndpoints({
       { page?: number; limit?: number }
     >({
       providesTags: ["films"],
-      query: ({ page = 1, limit = 1 }) => `/movie?page=${page}&limit=${limit}`,
+      query: ({ page = 1, limit = 10 }) => `/movie?page=${page}&limit=${limit}`,
     }),
   }),
 });
