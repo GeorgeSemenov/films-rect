@@ -4,9 +4,8 @@ import { api } from "../API/api";
 import { filters } from "../slices/filters";
 import { filmsSlice as filmsData } from "../slices/films";
 import { favoriteFilmsSlice as favFilms } from "../slices/favoriteFilms";
-import { userSlice as user } from "../slices/user";
 
-const reducers = combineSlices(favFilms, filters, error, api, filmsData, user);
+const reducers = combineSlices(favFilms, filters, error, api, filmsData);
 const middleware = [api.middleware];
 
 const store = configureStore({

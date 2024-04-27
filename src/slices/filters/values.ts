@@ -16,20 +16,12 @@ export const filtersInitialValues: IFilters = {
   checkedSortingType: "byPopularity",
   genres: [
     {
-      id: 28,
-      name: "боевик",
+      name: "аниме",
+      slug: "anime",
     },
     {
-      id: 12,
-      name: "приключения",
-    },
-    {
-      id: 16,
-      name: "мультфильм",
-    },
-    {
-      id: 35,
-      name: "комедия",
+      name: "биография",
+      slug: "biografiya",
     },
   ],
   checkedGenres: [],

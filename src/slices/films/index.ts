@@ -16,7 +16,7 @@ export const filmsSlice = createSlice({
         const { films, totalPages } = payload as FilmsDataType;
         return { films, totalPages };
       } else {
-        const { results: films, total_pages: totalPages } =
+        const { docs: films, pages: totalPages } =
           payload as IFetchedFilmsResponse;
         return { films, totalPages };
       }

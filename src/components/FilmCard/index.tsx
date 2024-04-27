@@ -18,8 +18,12 @@ import useActions from "../../hooks/useActions";
 import { IFilm } from "../../API/films/types";
 
 export default function FilmCard({ film }: { film: IFilm }) {
-  const { href, backdrop_path, title, id, vote_average } = film;
-  const fullImageRef = imgServerPrefix + backdrop_path;
+  const {
+    poster: { previewUrl: previewPoster },
+    name,
+    id,
+    rating: { kp: kpRating },
+  } = film;
   return (
     <Card sx={{ maxWidth: 345, height: "100%" }}>
       <Link to={`${filmLinkPrefix}/${id}`}>
@@ -27,20 +31,20 @@ export default function FilmCard({ film }: { film: IFilm }) {
           <CardMedia
             component="img"
             height="140"
-            image={fullImageRef}
-            alt={`Картинка фильма ${title} не подгрузилась, извините. Возможно проблема с VPN.`}
+            image={previewPoster}
+            alt={`Картинка фильма ${name} не подгрузилась, извините. Возможно проблема с VPN.`}
           />
         </CardActionArea>
       </Link>
       <CardContent className="film-card__footer">
         <div>
-          <a href={href}>
+          <Link to={`${filmLinkPrefix}/${id}`}>
             <Typography gutterBottom variant="h5" component="div">
-              {title}
+              {name}
             </Typography>
-          </a>
+          </Link>
           <Typography variant="body2" color="text.secondary">
-            Рейтинг {vote_average}
+            Рейтинг {kpRating}
           </Typography>
         </div>
       </CardContent>
