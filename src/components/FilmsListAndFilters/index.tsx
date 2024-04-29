@@ -6,9 +6,11 @@ import useActions from "../../hooks/useActions";
 import { useGetFilmsQuery } from "../../API/films";
 import { FilmsDataType } from "../../slices/films/types";
 import { CircularProgress } from "@mui/material";
+import useFilters from "../../hooks/useFilters";
 
 export default function FilmsListAndFilters() {
   const { setGenres, setError, setFilmsData } = useActions();
+  const filters = useFilters();
   const {
     isLoading: isLoadingGenres,
     data: fetchedGenres,
@@ -16,10 +18,10 @@ export default function FilmsListAndFilters() {
   } = useGetGenresQuery();
 
   const {
-    isLoading: isLoadingFilms,
+    isFetching: isLoadingFilms,
     error: errorFetchedFilms,
     data: fetchedFilmsData,
-  } = useGetFilmsQuery({});
+  } = useGetFilmsQuery(filters);
 
   //локальная инициализация фильтров, фильмов и избранных фильмов
   if (!isLoadingGenres && !isLoadingFilms) {
@@ -37,8 +39,18 @@ export default function FilmsListAndFilters() {
 
   return (
     <div style={{ display: "flex" }}>
-      {isLoadingFilms ? <CircularProgress /> : <Filters />}
-      <FilmsList />
+      {isLoadingGenres ? (
+        <CircularProgress />
+      ) : (
+        <>
+          <Filters />
+          {!isLoadingFilms && fetchedFilmsData ? (
+            <FilmsList films={fetchedFilmsData.docs} />
+          ) : (
+            <CircularProgress />
+          )}
+        </>
+      )}
     </div>
   );
 }

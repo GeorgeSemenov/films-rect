@@ -1,6 +1,5 @@
 import { FILMS_RELATIVE_URL } from "../../constants";
-import { IFavoriteFilm } from "../../slices/favoriteFilms/types";
-import { IFilters, sortingValuesType } from "../../slices/filters/types";
+import { IFilters } from "../../slices/filters/types";
 import { api } from "../api";
 import { IFetchedFilmResponse, IFetchedFilmsResponse } from "./types";
 
@@ -10,13 +9,12 @@ const filmsApi = api.injectEndpoints({
       providesTags: ["films"],
       query: (filmId) => `${FILMS_RELATIVE_URL}/${filmId}`,
     }),
-    getFilms: build.query<
-      IFetchedFilmsResponse,
-      { page?: number; limit?: number }
-    >({
+    getFilms: build.query<IFetchedFilmsResponse, IFilters>({
       providesTags: ["films"],
-      query: ({ page = 1, limit = 20 }) =>
-        `${FILMS_RELATIVE_URL}?page=${page}&limit=${limit}`,
+      query: ({ paginationPage: page = 1 }) => {
+        const filmsLimit = 20;
+        return `${FILMS_RELATIVE_URL}?page=${page}&filmsLimit=${filmsLimit}`;
+      },
     }),
   }),
 });

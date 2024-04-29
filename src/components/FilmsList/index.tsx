@@ -6,9 +6,9 @@ import useActions from "../../hooks/useActions";
 import FilmCard from "../FilmCard";
 import { CircularProgress } from "@mui/material";
 
-export default function FilmsList() {
-  const { setFavoriteFilms, setError } = useActions();
-  const { films } = useFilmsData();
+export default function FilmsList({ films }: { films: IFilm[] }) {
+  // const { setFavoriteFilms, setError } = useActions();
+  // const { films } = useFilmsData();
 
   return (
     <>
