@@ -1,12 +1,12 @@
 import React from "react";
 import useFilmsData from "../../hooks/useFilmsData";
-import { IFilm } from "../../API/films/types";
+import { IDocFilm } from "../../API/films/types";
 import useFilters from "../../hooks/useFilters";
 import useActions from "../../hooks/useActions";
 import FilmCard from "../FilmCard";
 import { CircularProgress } from "@mui/material";
 
-export default function FilmsList({ films }: { films: IFilm[] }) {
+export default function FilmsList({ films }: { films: IDocFilm[] }) {
   // const { setFavoriteFilms, setError } = useActions();
   // const { films } = useFilmsData();
 
@@ -19,7 +19,7 @@ export default function FilmsList({ films }: { films: IFilm[] }) {
             странице
           </p>
         ) : (
-          films.map((film: IFilm) => {
+          films.map((film: IDocFilm) => {
             return (
               <li
                 key={film.id}

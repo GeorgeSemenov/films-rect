@@ -9,14 +9,14 @@ import { useGetFilmQuery } from "../../API/films";
 export default function filmPage() {
   const { filmID } = useParams();
   const navigate = useNavigate();
-  if (!filmID) {
-    return <p>невозможно получить идентификатор фильма</p>;
-  }
   const {
     data: filmData,
     isLoading: isFilmDataLoading,
     isError: isFetchingFilmDataError,
-  } = useGetFilmQuery(+filmID);
+  } = useGetFilmQuery(filmID ? +filmID : 0);
+  if (!filmID) {
+    return <p>невозможно получить идентификатор фильма</p>;
+  }
 
   if (isFilmDataLoading) {
     return <CircularProgress />;

@@ -1,9 +1,10 @@
 import { Url } from "url";
 import { IGenre } from "../genres/types";
 
-export interface IFilm {
+export interface IDocFilm {
   id: number;
   description: string;
+  shortDescription: string;
   genres: IGenre[];
   name: string;
   poster: { previewUrl: string; url: string };
@@ -12,7 +13,7 @@ export interface IFilm {
 }
 
 export interface IFetchedFilmsResponse {
-  docs: IFilm[];
+  docs: IDocFilm[];
   pages: number;
 }
 

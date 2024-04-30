@@ -15,9 +15,9 @@ import {
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import useActions from "../../hooks/useActions";
-import { IFilm } from "../../API/films/types";
+import { IDocFilm } from "../../API/films/types";
 
-export default function FilmCard({ film }: { film: IFilm }) {
+export default function FilmCard({ film }: { film: IDocFilm }) {
   const {
     poster: { previewUrl: previewPoster },
     name,
