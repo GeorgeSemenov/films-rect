@@ -1,4 +1,5 @@
 import React from "react";
+import "./styles.scss";
 import Filters from "../Filters";
 import FilmsList from "../FilmsList";
 import { useGetGenresQuery } from "../../API/genres";
@@ -38,7 +39,7 @@ export default function FilmsListAndFilters() {
   }
 
   return (
-    <div style={{ display: "flex" }}>
+    <div className="app-container">
       {isLoadingGenres ? (
         <CircularProgress />
       ) : (

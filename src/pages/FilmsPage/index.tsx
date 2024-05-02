@@ -3,7 +3,6 @@ import "./styles.scss";
 import { CircularProgress, IconButton } from "@mui/material";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { imgPostersServerPrefix } from "../../constants";
 import { useGetFilmQuery } from "../../API/films";
 
 export default function filmPage() {
@@ -24,8 +23,8 @@ export default function filmPage() {
   if (isFetchingFilmDataError || !filmData) {
     return <p>Не удалось подгрузить данные о фильме</p>;
   }
+  const { budget, name, genres, rating, slogan, description } = filmData;
   const goBack = () => navigate(-1);
-  const name = filmData.name;
   const src = filmData.poster.url;
   const maxActorsPerPage = 5;
   const cast =
@@ -37,10 +36,11 @@ export default function filmPage() {
       <div className="film-page">
         <img className="film-page__poster" alt="film's poster" src={src} />
         <div className="film-page__text-content">
-          <h2>{name}</h2>
           <IconButton onClick={() => goBack()}>
             <ArrowBack />
           </IconButton>
+          <h2>{name}</h2>
+          <p>{slogan}</p>
           <div className="film-page__credits">
             <h3>В фильме снимались:</h3>
             <ul>
@@ -53,10 +53,14 @@ export default function filmPage() {
             <h3>детали</h3>
             <ul>
               <table>
-                <tr>
-                  <td>Бюджет</td>
-                  <td>{budget + " денег"}</td>
-                </tr>
+                {budget && (
+                  <tr>
+                    <td>Бюджет</td>
+                    <td>
+                      {budget.value ? budget.value : "" + budget.currency}
+                    </td>
+                  </tr>
+                )}
                 <tr>
                   <td>Жанры</td>
                   <td>
@@ -72,11 +76,13 @@ export default function filmPage() {
                 </tr>
                 <tr>
                   <td>Рэйтинг</td>
-                  <td>{popularity}</td>
+                  <td>{rating.kp}</td>
                 </tr>
               </table>
             </ul>
           </div>
+          <h3>Описание</h3>
+          <p>{description}</p>
         </div>
       </div>
     </>

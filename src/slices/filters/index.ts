@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { filtersInitialValues } from "./values";
-import { IFilters, filtersYearsType, sortingValuesType } from "./types";
+import { IFilters, filtersYearsType } from "./types";
 import { IGenre } from "../../API/genres/types";
 
 export const filters = createSlice({
@@ -9,16 +9,9 @@ export const filters = createSlice({
   reducers: {
     resetFilters: (state: IFilters) => {
       state.checkedGenres = filtersInitialValues.checkedGenres;
-      state.checkedSortingType = filtersInitialValues.checkedSortingType;
       state.paginationPage = filtersInitialValues.paginationPage;
       state.searchQuery = filtersInitialValues.searchQuery;
       state.years = filtersInitialValues.years;
-    },
-    setSorting: (
-      state,
-      { payload: sortingType }: { payload: sortingValuesType }
-    ) => {
-      state.checkedSortingType = sortingType;
     },
     setYears: (state, { payload: years }: { payload: filtersYearsType }) => {
       state.years = years;

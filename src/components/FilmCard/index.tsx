@@ -1,20 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import "./styles.scss";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { cookiesNames, filmLinkPrefix, imgServerPrefix } from "../../constants";
-import {
-  Box,
-  Button,
-  CardActionArea,
-  CardActions,
-  IconButton,
-} from "@mui/material";
+import { filmLinkPrefix } from "../../constants";
+import { Button, CardActionArea, CardActions } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useCookies } from "react-cookie";
-import useActions from "../../hooks/useActions";
 import { IDocFilm } from "../../API/films/types";
 
 export default function FilmCard({ film }: { film: IDocFilm }) {
@@ -27,12 +19,13 @@ export default function FilmCard({ film }: { film: IDocFilm }) {
   return (
     <Card sx={{ maxWidth: 345, height: "100%" }}>
       <Link to={`${filmLinkPrefix}/${id}`}>
-        <CardActionArea>
+        <CardActionArea sx={{ textAlign: "center", display: "flex" }}>
           <CardMedia
+            sx={{ width: "auto" }}
             component="img"
             height="140"
             image={previewPoster}
-            alt={`Картинка фильма ${name} не подгрузилась, извините. Возможно проблема с VPN.`}
+            alt={`Картинка фильма ${name} не подгрузилась, извините`}
           />
         </CardActionArea>
       </Link>

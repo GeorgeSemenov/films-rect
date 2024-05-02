@@ -1,19 +1,6 @@
 import { IFilters } from "./types";
 
 export const filtersInitialValues: IFilters = {
-  sortingTypes: [
-    {
-      value: "byPopularity",
-      label: "По популярности",
-      selected: true,
-    },
-    {
-      value: "byRating",
-      label: "По рэйтингу",
-      selected: false,
-    },
-  ],
-  checkedSortingType: "byPopularity",
   genres: [
     {
       name: "аниме",

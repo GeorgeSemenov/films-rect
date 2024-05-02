@@ -1,4 +1,4 @@
-import { FILMS_RELATIVE_URL } from "../../constants";
+import { FILMS_RELATIVE_URL, searchFilmsQueryUrl } from "../../constants";
 import { IFilters } from "../../slices/filters/types";
 import { api } from "../api";
 import { IFetchedFilmsResponse, IFilm } from "./types";
@@ -11,9 +11,19 @@ const filmsApi = api.injectEndpoints({
     }),
     getFilms: build.query<IFetchedFilmsResponse, IFilters>({
       providesTags: ["films"],
-      query: ({ paginationPage: page = 1 }) => {
+      query: ({ checkedGenres, searchQuery, paginationPage: page = 1 }) => {
         const filmsLimit = 20;
-        return `${FILMS_RELATIVE_URL}?page=${page}&filmsLimit=${filmsLimit}`;
+        if (searchQuery) {
+          return `${searchFilmsQueryUrl}?page=${page}&limit=${filmsLimit}&query=${searchQuery}`;
+        }
+        //https://api.kinopoisk.dev/v1.4/movie?page=1&limit=10&genres.name=
+        // genres.name=+драма&genres.name=+криминал
+        let genresQuery = "";
+        if (checkedGenres.length > 0) {
+          const genresString;
+          genresQuery = "&genres.name=";
+        }
+        return `${FILMS_RELATIVE_URL}?page=${page}&filmsLimit=${filmsLimit}${genresQuery}`;
       },
     }),
   }),

@@ -1,7 +1,7 @@
 import { IGenre } from "../genres/types";
 
 export interface IFilm extends IDocFilm {
-  slogan: string;
+  slogan?: string;
   persons: [
     {
       id: number;
@@ -9,7 +9,7 @@ export interface IFilm extends IDocFilm {
       name: string;
     }
   ];
-  budget: {
+  budget?: {
     currency: string;
     value: number;
   };
@@ -21,7 +21,7 @@ export interface IDocFilm {
   shortDescription: string;
   genres: IGenre[];
   name: string;
-  poster: { previewUrl: string; url: string };
+  poster: { previewUrl?: string; url?: string };
   rating: { kp: number };
   year: number;
 }
