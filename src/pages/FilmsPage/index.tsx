@@ -25,24 +25,19 @@ export default function filmPage() {
     return <p>Не удалось подгрузить данные о фильме</p>;
   }
   const goBack = () => navigate(-1);
-  const budget = filmData.details.budget;
-  const genres = filmData.details.genres;
-  const popularity = filmData.details.popularity;
-  const title = filmData.details.title;
-  const src = filmData.details?.poster_path
-    ? imgPostersServerPrefix + filmData.details.poster_path
-    : "#!";
+  const name = filmData.name;
+  const src = filmData.poster.url;
   const maxActorsPerPage = 5;
   const cast =
-    filmData.credits.cast.length > maxActorsPerPage
-      ? filmData.credits.cast.slice(0, 5).concat([{ name: "..." }])
-      : filmData.credits.cast;
+    filmData.persons.length > maxActorsPerPage
+      ? filmData.persons.slice(0, 5).concat([{ name: "...", id: 0 }])
+      : filmData.persons;
   return (
     <>
       <div className="film-page">
         <img className="film-page__poster" alt="film's poster" src={src} />
         <div className="film-page__text-content">
-          <h2>{title}</h2>
+          <h2>{name}</h2>
           <IconButton onClick={() => goBack()}>
             <ArrowBack />
           </IconButton>

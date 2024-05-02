@@ -1,11 +1,11 @@
 import { FILMS_RELATIVE_URL } from "../../constants";
 import { IFilters } from "../../slices/filters/types";
 import { api } from "../api";
-import { IFetchedFilmResponse, IFetchedFilmsResponse } from "./types";
+import { IFetchedFilmsResponse, IFilm } from "./types";
 
 const filmsApi = api.injectEndpoints({
   endpoints: (build) => ({
-    getFilm: build.query<IFetchedFilmResponse, number>({
+    getFilm: build.query<IFilm, number>({
       providesTags: ["films"],
       query: (filmId) => `${FILMS_RELATIVE_URL}/${filmId}`,
     }),

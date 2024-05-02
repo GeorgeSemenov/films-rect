@@ -1,5 +1,19 @@
-import { Url } from "url";
 import { IGenre } from "../genres/types";
+
+export interface IFilm extends IDocFilm {
+  slogan: string;
+  persons: [
+    {
+      id: number;
+      photo?: string;
+      name: string;
+    }
+  ];
+  budget: {
+    currency: string;
+    value: number;
+  };
+}
 
 export interface IDocFilm {
   id: number;
@@ -15,23 +29,4 @@ export interface IDocFilm {
 export interface IFetchedFilmsResponse {
   docs: IDocFilm[];
   pages: number;
-}
-
-export interface IFetchedFilmResponse {
-  credits: ICredits;
-  details: IDetails;
-}
-
-interface IDetails {
-  title: string;
-  budget: number;
-  genres: { name: string }[];
-  popularity: number;
-  poster_path?: string | Url;
-}
-interface ICredits {
-  cast: ICast[];
-}
-interface ICast {
-  name: string;
 }
