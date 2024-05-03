@@ -19,10 +19,12 @@ const filmsApi = api.injectEndpoints({
         //https://api.kinopoisk.dev/v1.4/movie?page=1&limit=10&genres.name=
         // genres.name=+драма&genres.name=+криминал
         let genresQuery = "";
-        if (checkedGenres.length > 0) {
-          const genresString;
-          genresQuery = "&genres.name=";
+        for (const checkedGenre of checkedGenres) {
+          genresQuery += `&genres.name=${checkedGenre.name}`;
         }
+        console.warn(
+          `zapros=${`${FILMS_RELATIVE_URL}?page=${page}&filmsLimit=${filmsLimit}${genresQuery}`}`
+        );
         return `${FILMS_RELATIVE_URL}?page=${page}&filmsLimit=${filmsLimit}${genresQuery}`;
       },
     }),
