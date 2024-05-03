@@ -16,15 +16,11 @@ const filmsApi = api.injectEndpoints({
         if (searchQuery) {
           return `${searchFilmsQueryUrl}?page=${page}&limit=${filmsLimit}&query=${searchQuery}`;
         }
-        //https://api.kinopoisk.dev/v1.4/movie?page=1&limit=10&genres.name=
-        // genres.name=+драма&genres.name=+криминал
-        let genresQuery = "";
-        for (const checkedGenre of checkedGenres) {
-          genresQuery += `&genres.name=${checkedGenre.name}`;
-        }
-        console.warn(
-          `zapros=${`${FILMS_RELATIVE_URL}?page=${page}&filmsLimit=${filmsLimit}${genresQuery}`}`
+        const genresQuery = checkedGenres.reduce(
+          (cur, next) => (cur += `&genres.name=${next.name}`),
+          ""
         );
+
         return `${FILMS_RELATIVE_URL}?page=${page}&filmsLimit=${filmsLimit}${genresQuery}`;
       },
     }),

@@ -15,26 +15,30 @@ export default function LoginWindow() {
   const [isCorrectInput, setIsCorrectInput] = useState(true);
   const [email, setEmail] = useState("");
   const [, setCookie] = useCookies([cookiesNames.isAuthorized]);
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const answer = isEmailCorrect(email);
+    setIsCorrectInput(answer);
+    if (isEmailCorrect(email)) {
+      setCookie(cookiesNames.isAuthorized, true, { maxAge: 3600 * 24 });
+      setCookie(cookiesNames.email, email, { maxAge: 3600 * 24 });
+    }
+  }
   return (
-    <form
-      className="login-form"
-      onSubmit={(e) => {
-        e.preventDefault();
-        const answer = isEmailCorrect(email);
-        setIsCorrectInput(answer);
-        if (isEmailCorrect(email)) {
-          setCookie(cookiesNames.isAuthorized, true, { maxAge: 3600 * 24 });
-          setCookie(cookiesNames.email, email, { maxAge: 3600 * 24 });
-        }
-      }}
-    >
+    <form className="login-form" onSubmit={onSubmit}>
       <div className="login-form__wrapper">
         <span className="login-form__header">
-          Для отображения списков фильмов необоходимо авторизоваться
-          <br />
-          Вы можете просто выдумать email и ввести его. <br />
-          Никаких писем отправленно не будет
+          Вы можете авторизоваться или войти без регистрации.
         </span>
+        <Button
+          type="submit"
+          variant="outlined"
+          color="primary"
+          className="login-form__send-button_with-mb"
+        >
+          Войти без регистрации
+        </Button>
+
         <TextField
           inputRef={inputRef}
           name="email"
@@ -61,7 +65,7 @@ export default function LoginWindow() {
           color="primary"
           className="login-form__send-button"
         >
-          Отправить
+          Войти с регистрацией
         </Button>
       </div>
     </form>

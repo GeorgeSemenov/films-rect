@@ -14,9 +14,3 @@ export const api = createApi({
   tagTypes: ["genres", "film", "films"],
   endpoints: () => ({}),
 });
-
-/*Что будем подгружать
-/movie/{id}
-/movie/search
-/movie/possible-values-by-field (жонры)
-*/
